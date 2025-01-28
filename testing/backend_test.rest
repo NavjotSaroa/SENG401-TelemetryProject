@@ -1,0 +1,3 @@
+# 
+GET http://localhost:3000/api/telemetry/fetch?year=2022&track=Monza&session=Q&driver=LEC
+Content-Type: application/json
