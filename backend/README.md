@@ -45,3 +45,9 @@ The backend is structured in a **layered architecture** consisting of:
 4. Middleware Layer - `middleware/auth.py`. Handles user authentication using JWT's.
 
 This layered structure makes it so that the backend has a clear separation of concerns, where each layer has a different responsibility. This also makes the backend more modular, and thus we can easily modify one layer without affecting the others. Lastly, each layer can be tested seperately, making unit testing easier. 
+
+## API Rate Limits
+- fastf1: When rate limits are exceeded, FastF1 will either…
+  - throttle the rate of requests, if small delays are sufficient to stay within the limit (soft rate limit)
+  - raise a `fastf1.RateLimitExceededError` (hard rate limit)
+- OpenAI: 
