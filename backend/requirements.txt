@@ -1,0 +1,8 @@
+flask
+flask-socketio ??
+flask-cors
+mysql-connector-python
+pyjwt
+fastf1
+openai
+reportlab
