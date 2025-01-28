@@ -5,3 +5,4 @@ pyjwt
 fastf1
 openai
 reportlab
+pandas
