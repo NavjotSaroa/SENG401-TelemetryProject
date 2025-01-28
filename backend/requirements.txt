@@ -1,5 +1,4 @@
 flask
-flask-socketio ??
 flask-cors
 mysql-connector-python
 pyjwt
