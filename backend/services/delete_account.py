@@ -22,5 +22,7 @@ def delete_user_account(username, password):
             cursor.execute("DELETE FROM users WHERE id = %s", (user_id))
             connection.commit()
             
+            cursor.execute("DELETE FROM telemetry_data WHERE user_id = %s", (user_id))
+            connection.commit()
     finally:
         connection.close()

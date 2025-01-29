@@ -10,3 +10,5 @@ pymysql
 python-dotenv
 os
 bcrypt
+jwt
+datetime

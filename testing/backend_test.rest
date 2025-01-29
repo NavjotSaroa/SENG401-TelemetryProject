@@ -24,8 +24,9 @@ Content-Type: application/json
 }
 
 ###
-# Test deleting a user
+# Test deleting a user. Requires bearer token. The correct token is obtainable via sign in
 DELETE http://localhost:3000/api/auth/delete_account
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5LCJ1c2VybmFtZSI6Ik1pa2UiLCJleHAiOjE3MzgxMzc5NzZ9.VKpCh02lzlQ_wqh3uxc-n4ZdvUdSTNITQ9dsSK52ge4
 Content-Type: application/json
 
 {
