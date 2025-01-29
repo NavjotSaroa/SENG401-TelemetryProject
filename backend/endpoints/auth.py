@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from services.register import register_user
 from services.login import login_user
 from services.delete_account import delete_user_account
+from middleware.auth import jwt_required
 
 auth_api = Blueprint("auth_api", __name__)
 
@@ -42,6 +43,7 @@ def login():
         return jsonify({"error": str(e)}), 401
     
 @auth_api.route('/delete_account', methods=['DELETE'])
+@jwt_required
 def delete_account():
     """
     API endpoint for deleting user data from the DB.

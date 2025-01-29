@@ -1,5 +1,12 @@
 import bcrypt
 from middleware.db_connection import get_db_connection
+import jwt
+import datetime
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 
 def login_user(username, password):
     connection = get_db_connection()
@@ -16,7 +23,18 @@ def login_user(username, password):
             if not bcrypt.checkpw(password.encode('utf-8'), stored_password_hash.encode('utf-8')):
                 raise ValueError("Incorrect password for the given user")
             
-            # JWT?? Might be a little too much for mvp?
+            # Generate JWT token... everything above works without jwt stuff
+            token = jwt.encode(
+                {
+                    "user_id": user_id,
+                    "username": username,
+                    "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+                },
+                SECRET_KEY,
+                algorithm="HS256"
+            )
+            print(token)    # DEBUGGING ONLY
+            return token
             
     finally:
         connection.close()
