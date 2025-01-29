@@ -11,3 +11,14 @@ Content-Type: application/json
     "username": "Mike",
     "password": "Guazouski?"
 }
+
+###
+# Test loging in as a user
+
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "Mike",
+    "password": "Guazouski?"
+}
