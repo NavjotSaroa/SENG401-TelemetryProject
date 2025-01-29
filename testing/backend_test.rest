@@ -1,3 +1,13 @@
-# 
+# Test getting fastf1 telemetry data for specific driver, etc
 GET http://localhost:3000/api/telemetry/fetch?year=2022&track=Monza&session=Q&driver=LEC
 Content-Type: application/json
+
+###
+# Test registering a new user
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+    "username": "Mike",
+    "password": "Guazouski?"
+}

@@ -6,3 +6,7 @@ fastf1
 openai
 reportlab
 pandas
+pymysql
+python-dotenv
+os
+bcrypt
