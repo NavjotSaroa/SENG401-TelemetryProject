@@ -22,3 +22,13 @@ Content-Type: application/json
     "username": "Mike",
     "password": "Guazouski?"
 }
+
+###
+# Test deleting a user
+DELETE http://localhost:3000/api/auth/delete_account
+Content-Type: application/json
+
+{
+    "username": "Mike",
+    "password": "Guazouski?"
+}
