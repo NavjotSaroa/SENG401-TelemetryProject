@@ -1,5 +1,15 @@
 from flask import Blueprint, request, jsonify
-from services.telemetry_service import fetch_telemetry_data
+from backend.services.ff1_interact import fetch_telemetry_data
+
+"""This file won't work with the new version of ff1_interact
+
+TODO: Change this so that it can handle making multiple requests. First it should request the track list for the chosen year.
+Then it should request the list of drivers for the chosen track.
+
+It should not request telemetry, that will be sent off for analysis in the services section.
+"""
+
+
 
 # Initialize blueprint
 telemetry_api = Blueprint("telemetry_api", __name__)
