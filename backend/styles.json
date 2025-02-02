@@ -1,0 +1,25 @@
+{
+    "cyberpunk":
+    {
+        "Speed": "#ff1801", 
+        "Throttle": "#e61601", 
+        "Brake": "#cc1301",
+        "nGear": "#b31101",
+        "Text": "#8b8c8e",
+        "CornerNums": "#6b789c",
+        "Background": "#121c39",
+        "OverallBackgorund": "#101933"
+    },
+
+    "barbie":
+    {
+        "Speed": "#e305ad", 
+        "Throttle": "#cc059c", 
+        "Brake": "#b6048a",
+        "nGear": "#9f0479",
+        "Text": "#794d6c",
+        "CornerNums": "#59397e",
+        "Background": "#f7f1fd",
+        "OverallBackgorund": "#f29ad8"
+    }
+}
