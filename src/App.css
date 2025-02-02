@@ -1,0 +1,187 @@
+/* Racing Theme Styles */
+:root {
+  --primary-red: #FF1801;
+  --dark-bg: #0a0a0a;
+  --racing-yellow: #FFD700;
+  --carbon-fiber: #2b2b2b;
+  --neon-blue: #00f3ff;
+  --text-primary: #ffffff;
+}
+
+body {
+  background-color: var(--dark-bg);
+  color: var(--text-primary);
+  font-family: 'Titillium Web', sans-serif;
+  min-height: 100vh;
+}
+
+/* Navigation */
+.navbar {
+  background: linear-gradient(90deg, var(--dark-bg) 0%, var(--carbon-fiber) 100%);
+  border-bottom: 2px solid var(--primary-red);
+}
+
+.navbar-brand {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  color: var(--text-primary) !important;
+  text-shadow: 0 0 10px var(--primary-red);
+}
+
+.nav-link {
+  transition: all 0.3s ease !important;
+}
+
+.nav-link:hover {
+  color: var(--primary-red) !important;
+}
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(45deg, var(--dark-bg) 0%, var(--primary-red) 100%);
+  border: 1px solid var(--primary-red);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(45deg, var(--primary-red) 0%, var(--dark-bg) 100%);
+}
+
+/* Forms */
+.form-control {
+  background-color: rgba(43, 43, 43, 0.8) !important;
+  border: 1px solid var(--primary-red) !important;
+  color: white !important;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 15px var(--primary-red) !important;
+}
+
+/* Special Components */
+.telemetry-comparison {
+  background: rgba(11, 11, 11, 0.9);
+  border: 2px solid var(--primary-red);
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.analysis-result {
+  border: 1px solid var(--neon-blue);
+  background: rgba(0, 243, 255, 0.05);
+}
+
+.text-racing {
+  color: var(--primary-red);
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* Container */
+.container {
+  position: relative;
+  z-index: 1;
+  background: rgba(10, 10, 10, 0.9);
+  padding: 2rem;
+  border-radius: 8px;
+  margin-top: 2rem;
+}
+
+/* Track Selection Styles */
+.track-selection-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.track-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.track-card {
+  position: relative;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.track-card:hover {
+  transform: translateY(-5px);
+}
+
+.track-card.selected {
+  border-color: var(--primary-red);
+  box-shadow: 0 0 15px rgba(255, 24, 1, 0.4);
+}
+
+.track-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.track-name {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to bottom, 
+      rgba(10, 10, 10, 0.9) 0%, 
+      rgba(10, 10, 10, 0.6) 50%,
+      rgba(10, 10, 10, 0) 100%
+  );
+  color: white;
+  padding: 0.5rem 1rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(255, 24, 1, 0.7);
+  margin-top: 5px;
+}
+/* Race Data Entry Styles */
+.data-entry-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.data-entry-container .form-label {
+  font-weight: bold;
+  color: var(--neon-blue);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .telemetry-comparison {
+      padding: 1rem;
+      margin: 1rem 0;
+  }
+  
+  .track-grid {
+      grid-template-columns: 1fr;
+  }
+  
+  .track-image {
+      height: 150px;
+  }
+  
+  .data-entry-container {
+      padding: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .track-name {
+      font-size: 0.9rem;
+      padding: 0.5rem;
+  }
+  
+  .btn-primary {
+      width: 100%;
+  }
+}
