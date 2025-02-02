@@ -12,3 +12,6 @@ os
 bcrypt
 jwt
 datetime
+matplotlib
+json
+numpy
