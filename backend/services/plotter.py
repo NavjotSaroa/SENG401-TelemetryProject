@@ -1,6 +1,5 @@
 from matplotlib import pyplot as plt
-from ff1_interact import FF1_Interact
-from styling import StyleManager
+from services.styling import StyleManager
 
 class Plotter():
     @staticmethod
@@ -76,11 +75,3 @@ class Plotter():
         except KeyError as e:
             print(f"Error {e}")
             return 
-
-if __name__ == "__main__":
-    session2020 = FF1_Interact.request_telemetry(2018, 'Monaco', 44)
-    md= Plotter.plotting(session2020[0], session2020[1])
-    print(md, type(md))
-
-    Plotter.styling(md, 'cyberpunk')
-    plt.show()

@@ -1,4 +1,5 @@
 import fastf1 as ff1
+import pandas as pd
 
 ff1.ergast.interface.BASE_URL = "https://api.jolpi.ca/ergast/f1"
 
@@ -6,7 +7,7 @@ class FF1_Interact():
     @staticmethod
     def request_track_list(year):
         try:
-            return ff1.get_event_schedule(year)["Country"]
+            return ff1.get_event_schedule(year)["Country"].to_json()
         except:
             return None
 
@@ -15,7 +16,7 @@ class FF1_Interact():
         try:
             session = ff1.get_session(year, country, 'Q')
             session.load()
-            return session.results[['DriverNumber', 'FullName']]
+            return session.results['FullName'].to_json()
         except:
             return None
         
