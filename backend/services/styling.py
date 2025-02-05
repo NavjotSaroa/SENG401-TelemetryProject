@@ -43,6 +43,7 @@ class StyleManager():
             ylims = (min(y_data), max(y_data))  # Y-axis limits based on line data
             gradient_start = 'min'
             N_sampling_points = 50
+            GRADIENT_OFFSET_MULTIPLIER = 0.2 # Scales how far glow goes down
 
             """
             The rest of this function has been taken from the mplcyberpunk library and has been
@@ -51,7 +52,7 @@ class StyleManager():
             Ay = {"min": ymin, "max": ymax, "top": ylims[1], "bottom": ylims[0], "zero": 0}[
                 gradient_start
             ]
-            gradient_offset = (ymax - ymin) * 0.2  # Control how far the glow extends downward
+            gradient_offset = (ymax - ymin) * GRADIENT_OFFSET_MULTIPLIER  # Control how far the glow extends downward
             extent = [xmin, xmax, ymin, ymax + gradient_offset] 
 
             # find the visual extend of the gradient
