@@ -6,34 +6,87 @@ ff1.ergast.interface.BASE_URL = "https://api.jolpi.ca/ergast/f1"
 class FF1_Interact():
     @staticmethod
     def request_track_list(year):
+        """
+        Fetches track list from the Fast F1 library
+
+        Args:
+            - year: int
+
+        Returns:
+            JSON object of tracks, converted from the pandas dataframe that is received from fastf1,
+            0 indexed
+        """
+
+        if year < 2019 or year > 2024: # Data is only available between 2019 and 2024
+            raise ValueError
+
         try:
-            return ff1.get_event_schedule(year)["Country"].to_json()
-        except:
-            return None
+            track_list = ff1.get_event_schedule(year)["Country"]    # Retrieve dataframe of track list
+            track_list_json = track_list.to_json()                  # Convert dataframe to json
+            return track_list_json
+        except Exception as e:
+            raise RuntimeError
 
     @staticmethod
     def request_drivers(year, country):
+        """
+        Fetches drivers list from the Fast F1 library
+
+        Args:
+            - year: int
+            - country: str
+
+        Returns:
+            JSON object of drivers, converted from the pandas dataframe that is received from fastf1,
+            keys are the driver's numbers (eg: Charles Leclerc is 16)
+        """
+
+        if year < 2019 or year > 2024: # Data is only available between 2019 and 2024
+            raise ValueError
+
         try:
-            session = ff1.get_session(year, country, 'Q')
-            session.load()
-            return session.results['FullName'].to_json()
+            session = ff1.get_session(year, country, 'Q')           # Retrieve session data (Session object)
+            session.load()                                          # Load session to get all data
+            drivers = session.results['FullName']                   # Extract dataframe of driver names
+            drivers_json = drivers.to_json()                        # Convert dataframe to json
+            return drivers_json
         except:
-            return None
+            raise RuntimeError
         
     @staticmethod
     def request_telemetry(year, country, driver):
+        """
+        Fetches driver's telemetry from the Fast F1 library
+
+        Args:
+            - year: int
+            - country: str
+            - driver: str
+
+        Returns:
+            Two dataframes:
+                - car_data: Telemetry data for car (Speed, Gear, Brake, Throttle, Distance from start line)
+                - circuit_info: Information regarding circuit (eg: Corner distance from start line)
+        """
+        if year < 2019 or year > 2024: # Data is only available between 2019 and 2024
+            raise ValueError
+
         try:
-            session = ff1.get_session(year, country, 'Q')
-            session.load()
-            fastest_lap = session.laps.pick_drivers(driver).pick_fastest()
-            car_data = fastest_lap.get_car_data().add_distance()
-            circuit_info = session.get_circuit_info()
-            return (car_data[['Speed', 'nGear', 'Throttle', 'Brake', 'Distance']], circuit_info)
+            session = ff1.get_session(year, country, 'Q')                   # Retrieve session data (Session object)
+            session.load()                                                  # Load session to get all data
+            fastest_lap = session.laps.pick_drivers(driver).pick_fastest()  # Extract telemetry data 
+            car_data = fastest_lap.get_car_data().add_distance()            # Add column for distance (for corner markers)
+            car_data_relevant = car_data[[                                  # Don't need the rest of the data
+                'Speed', 
+                'nGear', 
+                'Throttle', 
+                'Brake', 
+                'Distance'
+            ]]
+
+            circuit_info = session.get_circuit_info()                       # Extract circuit information (corner distances)
+
+            return (car_data_relevant, circuit_info)
         
-        except:
-            return None
-
-
-if __name__ == "__main__":
-    data = FF1_Interact.request_telemetry(2018, 'Monaco', 44)
-    print(list(data[0]['Brake']))
+        except Exception as e:
+            raise RuntimeError
