@@ -14,6 +14,20 @@ GET http://localhost:3000/api/telemetry/fetch/telemetry?year=2023&track=Monaco&d
 # Test getting plot for specific driver in chosen race-weekend's fastest qualifying lap (using driver number)
 GET http://localhost:3000/api/telemetry/fetch/telemetry?year=2021&track=Belgium&driver=44
 
+###
+# Test invalid season choice for getting tracklist
+GET http://localhost:3000/api/telemetry/fetch/tracklist?year=2018
+GET http://localhost:3000/api/telemetry/fetch/tracklist?year=2026
+GET http://localhost:3000/api/telemetry/fetch/tracklist?year=abcd!
+
+###
+# Test invalid season choice for getting driver list
+GET http://localhost:3000/api/telemetry/fetch/drivers?year=bahrain&track=2023
+
+###
+# Test invalid input for getting plot
+GET http://localhost:3000/api/telemetry/fetch/telemetry?year=2023&track=Bahrain&driver=Navjot
+GET http://localhost:3000/api/telemetry/fetch/telemetry?year=2023&track=Bahrain&driver=1024
 
 ### 
 # Test getting fastf1 telemetry data for specific driver, etc
