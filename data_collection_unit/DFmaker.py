@@ -12,9 +12,9 @@ import copy
 import datetime
 
 class LiveDFMaker():
-    def __init__(self, ip_file_path, required_packets = [2, 6], required_columns = ["m_speed", "m_throttle", "m_brake", "m_gear", "m_lapDistance"]):
+    def __init__(self, required_packets = [2, 6], required_columns = ["m_speed", "m_throttle", "m_brake", "m_gear", "m_lapDistance"]):
         # UDP stuff
-        self.UDP_conn = self.get_udp_session(ip_file_path)
+        self.UDP_conn = self.get_udp_session()
         self.sock = self.UDP_conn.start_session()
         self.dataframe = pd.DataFrame(columns = required_columns)
         self.LAP_DATA_PACK = 2
@@ -29,21 +29,20 @@ class LiveDFMaker():
             for packet_id in self.required_packets
         ]
 
-    def get_udp_session(self, ip_file_path):
+    def get_udp_session(self):
         """
         Initiates a UDP session (logical packet exchange).
 
         Args:
-            - ip_file_path (str): Consists of IP address and port the packets are exchanged on.
+            - None
         
         Returns:
             - UDP_session (UDP): Custom object, will be used to initialise a UDP session.
         """
 
-        with open(ip_file_path) as file:
-            UDP_IP = str(file.readline())[:-1]  # Replace with your own IP address in str format
-            UDP_PORT = int(file.readline())     # Replace with your own port in int format
-            UDP_session = UDP(UDP_IP, UDP_PORT)
+        UDP_IP = input("Enter IP address: ")  # Replace with your own IP address in str format
+        UDP_PORT = int(input("Enter port: "))     # Replace with your own port in int format
+        UDP_session = UDP(UDP_IP, UDP_PORT)
         return UDP_session
 
     def collect_packets(self):
@@ -228,6 +227,24 @@ class LiveDFMaker():
 
         return extracted_data
     
+    def scale_dataframe_down(self, scale_factor):
+        """
+        Scales dataframe to 1/scale_factor it's original size. This is because the telemetry data
+        collected from the game is significantly larger than the real-life professional driver data.
+        The scaling is done by taking each scale_factor-th row of the dataframe. This maintains the
+        general trend of the data since it is a time series.
+
+        Args:
+            - scale_factor (int): Scale to reduce the dataframe by.
+        
+        Returns:
+            Scaled down version of self.dataframe.
+        """
+
+        self.dataframe = self.dataframe[::scale_factor]
+
+        return
+    
     def export_dataframe(self):
         """
         Exports the dataframe in CSV and parquet format.
@@ -243,3 +260,9 @@ class LiveDFMaker():
         self.dataframe.to_csv(f"{self.GAME_VERSION}_{self.SESSION_UID}_{self.SESSION_TIME}.csv")
         self.dataframe.to_parquet(f"{self.GAME_VERSION}_{self.SESSION_UID}_{self.SESSION_TIME}.parquet")
         print("Dataframe Exported")
+
+if __name__ == "__main__":
+    DF = LiveDFMaker()
+    DF.collect_packets()
+    DF.scale_dataframe_down(20)
+    DF.export_dataframe()
