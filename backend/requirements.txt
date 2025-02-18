@@ -8,11 +8,8 @@ reportlab
 pandas
 pymysql
 python-dotenv
-os
 bcrypt
 jwt
 datetime
 matplotlib
-json
 numpy
-io
