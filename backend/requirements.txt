@@ -9,7 +9,7 @@ pandas
 pymysql
 python-dotenv
 bcrypt
-jwt
 datetime
 matplotlib
 numpy
+PyJWT
