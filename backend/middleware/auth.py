@@ -21,7 +21,6 @@ def generate_jwt(user_id, username):
         payload = {
             "user_id": user_id,
             "username": username,
-            "exp": expiration_time
         }
         
         token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
