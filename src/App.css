@@ -185,3 +185,44 @@ body {
       width: 100%;
   }
 }
+/* Loader Styles */
+.loader-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Track Card Enhancements */
+.track-info {
+  padding: 1rem;
+  background: rgba(10, 10, 10, 0.9);
+}
+
+.track-location {
+  font-size: 0.9rem;
+  color: var(--neon-blue);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.track-date {
+  font-size: 0.8rem;
+  color: var(--racing-yellow);
+}
+
+.flag-icon {
+  font-size: 1.2rem;
+}
+
+/* Error Message */
+.alert-danger {
+  background: rgba(255, 24, 1, 0.1);
+  border: 1px solid var(--primary-red);
+  color: var(--text-primary);
+}
