@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -5,7 +6,7 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -16,35 +17,31 @@ export function AuthProvider({ children }) {
             headers: { Authorization: `Bearer ${token}` }
           });
           setUser(res.data);
+          setIsAuthenticated(true);
         } catch (err) {
           localStorage.removeItem('token');
         }
       }
-      setLoading(false);
     };
     checkAuth();
   }, []);
 
   const login = async (email, password) => {
-    const res = await axios.post('/api/auth/login', { email, password });
-    localStorage.setItem('token', res.data.token);
-    setUser(res.data.user);
-  };
-
-  const register = async (userData) => {
-    const res = await axios.post('/api/auth/register', userData);
-    localStorage.setItem('token', res.data.token);
-    setUser(res.data.user);
-  };
-
-  const logout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
+    try {
+      const res = await axios.post('/api/auth/login', { email, password });
+      localStorage.setItem('token', res.data.token);
+      setUser(res.data.user);
+      setIsAuthenticated(true);
+      return true;
+    } catch (error) {
+      setIsAuthenticated(false);
+      throw error;
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
-      {!loading && children}
+    <AuthContext.Provider value={{ user, isAuthenticated, login }}>
+      {children}
     </AuthContext.Provider>
   );
 }
