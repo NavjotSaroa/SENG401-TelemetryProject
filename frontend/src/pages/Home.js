@@ -1,8 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import './Home.css'; 
+import { useNavigate } from 'react-router-dom';
+import './Home.css';
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    navigate('/select-track');
+  };
+
   return (
     <div className="home-container">
       {/* Video Background */}
@@ -19,13 +25,18 @@ const Home = () => {
         <h1 className="display-4 text-racing mb-4">BonoGPT</h1>
         <p className="lead">Compare your racing performance with professional F1 drivers</p>
         <div className="mt-5">
-        <Link to="/select-track" className="btn btn-primary btn-lg me-3">
-          Get Started
-        </Link>
-        
-          <Link to="/compare" className="btn btn-outline-light btn-lg">
+          <button 
+            onClick={handleGetStarted}
+            className="btn btn-primary btn-lg me-3"
+          >
+            Get Started
+          </button>
+          <button 
+            onClick={() => navigate('/login')}
+            className="btn btn-outline-light btn-lg"
+          >
             Login
-          </Link>
+          </button>
         </div>
       </div>
     </div>

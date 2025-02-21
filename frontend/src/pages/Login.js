@@ -1,17 +1,23 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(email, password);
-    navigate('/dashboard');
+    try {
+      await login(email, password);
+      // Redirect to intended path or default to select-track
+      navigate(location.state?.from || '/select-track');
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
   };
 
   return (
