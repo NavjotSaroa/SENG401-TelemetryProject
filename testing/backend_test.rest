@@ -1,42 +1,42 @@
 ### 
 # Test getting tracklist for a chosen F1 season
-GET http://localhost:3000/api/telemetry/fetch/tracklist?year=2023
+GET http://localhost:3001/api/telemetry/fetch/tracklist?year=2023
 
 ### 
 # Test getting drivers for a chosen F1 race-weekend
-GET http://localhost:3000/api/telemetry/fetch/drivers?year=2023&track=Monaco
+GET http://localhost:3001/api/telemetry/fetch/drivers?year=2023&track=Monaco
 
 ### 
 # Test getting plot for specific driver in chosen race-weekend's fastest qualifying lap (using broadcast initials)
-GET http://localhost:3000/api/telemetry/fetch/telemetry?year=2023&track=Monaco&driver=HAM
+GET http://localhost:3001/api/telemetry/fetch/telemetry?year=2023&track=Monaco&driver=HAM
 
 ### 
 # Test getting plot for specific driver in chosen race-weekend's fastest qualifying lap (using driver number)
-GET http://localhost:3000/api/telemetry/fetch/telemetry?year=2021&track=Belgium&driver=44
+GET http://localhost:3001/api/telemetry/fetch/telemetry?year=2021&track=Belgium&driver=44
 
 ###
 # Test invalid season choice for getting tracklist
-GET http://localhost:3000/api/telemetry/fetch/tracklist?year=2018
-GET http://localhost:3000/api/telemetry/fetch/tracklist?year=2026
-GET http://localhost:3000/api/telemetry/fetch/tracklist?year=abcd!
+GET http://localhost:3001/api/telemetry/fetch/tracklist?year=2018
+GET http://localhost:3001/api/telemetry/fetch/tracklist?year=2026
+GET http://localhost:3001/api/telemetry/fetch/tracklist?year=abcd!
 
 ###
 # Test invalid season choice for getting driver list
-GET http://localhost:3000/api/telemetry/fetch/drivers?year=bahrain&track=2023
+GET http://localhost:3001/api/telemetry/fetch/drivers?year=bahrain&track=2023
 
 ###
 # Test invalid input for getting plot
-GET http://localhost:3000/api/telemetry/fetch/telemetry?year=2023&track=Bahrain&driver=Navjot
-GET http://localhost:3000/api/telemetry/fetch/telemetry?year=2023&track=Bahrain&driver=1024
+GET http://localhost:3001/api/telemetry/fetch/telemetry?year=2023&track=Bahrain&driver=Navjot
+GET http://localhost:3001/api/telemetry/fetch/telemetry?year=2023&track=Bahrain&driver=1024
 
 ### 
 # Test getting fastf1 telemetry data for specific driver, etc
-GET http://localhost:3000/api/telemetry/fetch/telemetry?year=2022&track=Monza&&driver=LEC
+GET http://localhost:3001/api/telemetry/fetch/telemetry?year=2022&track=Monza&&driver=LEC
 Content-Type: application/json
 
 ###
 # Test registering a new user
-POST http://localhost:3000/api/auth/register
+POST http://localhost:3001/api/auth/register
 Content-Type: application/json
 
 {
@@ -47,7 +47,7 @@ Content-Type: application/json
 ###
 # Test loging in as a user
 
-POST http://localhost:3000/api/auth/login
+POST http://localhost:3001/api/auth/login
 Content-Type: application/json
 
 {
@@ -57,7 +57,7 @@ Content-Type: application/json
 
 ###
 # Test deleting a user. Requires bearer token. The correct token is obtainable via sign in
-DELETE http://localhost:3000/api/auth/delete_account
+DELETE http://localhost:3001/api/auth/delete_account
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5LCJ1c2VybmFtZSI6Ik1pa2UiLCJleHAiOjE3MzgxMzc5NzZ9.VKpCh02lzlQ_wqh3uxc-n4ZdvUdSTNITQ9dsSK52ge4
 Content-Type: application/json
 
