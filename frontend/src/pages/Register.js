@@ -27,10 +27,8 @@ const Register = () => {
     }
 
     const registrationRequest = {
-      credentials: {
-        username,
-        password
-      }
+      username,
+      password
     };
 
     try {
