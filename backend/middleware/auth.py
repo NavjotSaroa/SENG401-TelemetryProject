@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from functools import wraps
 import jwt
-import datetime
+from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
 
@@ -16,7 +16,7 @@ def generate_jwt(user_id, username):
     Generate a JWT token for authenticated users.
     """
     try:
-        expiration_time = datetime.datetime.utcnow() + datetime.timedelta(hours=token_exp_hours)
+        expiration_time = datetime.now() + timedelta(hours=token_exp_hours)
         
         payload = {
             "user_id": user_id,
