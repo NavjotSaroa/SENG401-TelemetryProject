@@ -2,8 +2,8 @@
 import axios from 'axios';
 
 // Base URLs for different API groups
-const TELEMETRY_BASE = 'http://localhost:3000/api/telemetry';
-const AUTH_BASE = 'http://localhost:3000/api/auth';           
+const TELEMETRY_BASE = 'http://localhost:3001/api/telemetry';
+const AUTH_BASE = 'http://localhost:3001/api/auth';           
 
 export const fetchTracks = async (year) => {
   try {
