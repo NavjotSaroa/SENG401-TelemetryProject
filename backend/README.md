@@ -3,29 +3,30 @@
 backend/
 ├── middleware/ 
 │   ├── db_connection.py      # Handles MySQL DB connection
-│   ├── auth.py               # Handles JWT authentication & authorization
+│   ├── auth.py               # Handles JWT generation, authentication & authorization
 │
 ├── services/
 │   ├── telemetry_service.py  # Fetches F1 telemetry data (FastF1)
 │   ├── analysis_service.py   # Uses OpenAI's LLM for insights
 │   ├── report_service.py     # Generates PDF/image reports
+│   ├── delete_account.py     # Deletes user from DB
+│   ├── ff1_interact.py       # Provides several services interacting with fastf1
+│   ├── login.py              # Checks credentials on DB, then generates and returns a JWT token
+│   ├── plotter.py            # Creates a plot given certain parameters. 
+│   ├── register.py           # Saves a user and hashed password in DB
+│   ├── report_service.py     # Creates a report for the user, given LLM and user data
+│   ├── styling.py            # Styles the plots according to style chosen by the user
 │
 ├── endpoints/
 │   ├── telemetryApi.py       # Handles F1 telemetry API routes
 │   ├── dataAnalysis.py       # Handles data analysis API routes
-│   ├── reportGen.py          # Handles report generation API routes
+│   ├── reportGen.py          # Handles report generation API routes??
+│   ├── auth.py               # Handles user authentication API routes
 │
-├── models/
-│   ├── telemetry_model.py    # Defines telemetry JSON schema
-│   ├── user_model.py         # Defines user authentication schema
-│
-├── utils/
-│   ├── helper.py             # Common utility/helper functions?
-│
-├── config.py                 # Stores environment variables (secrets, DB config)
 ├── gateway.py                # API Gateway (single entry point)
-├── requirements.txt          # Python dependencies?
+├── requirements.txt          # Python dependencies
 ├── vercel.json               # Vercel configuration file
+├── styles.json               # Plot styles costumization presets
 └── README.md                 # Documentation
 ```
 
