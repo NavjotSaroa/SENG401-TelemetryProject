@@ -38,7 +38,7 @@ def login():
     
     try:
         token = login_user(username, password)
-        return jsonify({"message": "User logged in successfully", "token": token}), 200
+        return jsonify({"message": "User logged in successfully", "token": token, "username": username}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 401
     
