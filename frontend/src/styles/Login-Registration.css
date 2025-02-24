@@ -1,0 +1,29 @@
+/* CSS for Login and Registration*/
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.text-racing {
+    color: white;
+}
+
+.form-label {
+    color: white;
+    padding-right: 250px;
+}
+
+.form-control {
+    width: 100%;
+}
+
+.error-message {
+    color: white;
+}
+
+.alert {
+    color: white;
+}
