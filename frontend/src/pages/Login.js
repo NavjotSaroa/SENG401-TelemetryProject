@@ -7,7 +7,7 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [authenticationMessage, setAuthenticationMessage] = useState('');
-  const { setUser, setUsers } = useAuthContext();
+  const { setUser } = useAuthContext();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -35,10 +35,9 @@ function Login() {
       const data = await response.json();
       if (data) {
         setUser(data.user);
-        setUsers(data.username);
-
-        sessionStorage.setItem('user', data.user);
-        sessionStorage.setItem('userusername', data.username);
+        sessionStorage.setItem('jwtToken', data.token);
+        sessionStorage.setItem('username', data.username);
+        sessionStorage.setItem('user', JSON.stringify(data.user));
 
         navigate(location.state?.from || '/select-track');
       } else {
@@ -56,7 +55,7 @@ function Login() {
         <div className="mb-3">
           <label className="form-label">Email</label>
           <input
-            type="username"
+            type="text"
             className="form-control"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
