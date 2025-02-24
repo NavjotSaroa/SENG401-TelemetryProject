@@ -40,7 +40,7 @@ POST http://localhost:3001/api/auth/register
 Content-Type: application/json
 
 {
-    "username": "Mike",
+    "username": "Mike@test.com",
     "password": "Guazouski?"
 }
 
@@ -51,7 +51,7 @@ POST http://localhost:3001/api/auth/login
 Content-Type: application/json
 
 {
-    "username": "Mike",
+    "username": "Mike@test.com",
     "password": "Guazouski?"
 }
 
@@ -62,6 +62,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5LCJ1c
 Content-Type: application/json
 
 {
-    "username": "Mike",
+    "username": "Mike@test.com",
     "password": "Guazouski?"
 }
