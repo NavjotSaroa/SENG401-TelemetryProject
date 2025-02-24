@@ -20,7 +20,7 @@ def register():
 
     try:
         register_user(username, password)
-        return jsonify({"message": "User registered successfully"}), 201
+        return jsonify({"message": "User registered successfully"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
     
