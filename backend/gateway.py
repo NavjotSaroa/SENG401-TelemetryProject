@@ -16,4 +16,4 @@ app.register_blueprint(report_gen_api, url_prefix='/api/report_gen')
 app.register_blueprint(auth_api, url_prefix='/api/auth')
 
 if __name__ == "__main__":
-    app.run(host='localhost', port=3000, debug=True)
+    app.run(host='localhost', port=3001, debug=True)
