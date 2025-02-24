@@ -17,11 +17,13 @@ body {
 
 /* Navigation */
 .navbar {
+  height: 100px;
   background: linear-gradient(90deg, var(--dark-bg) 0%, var(--carbon-fiber) 100%);
   border-bottom: 2px solid var(--primary-red);
 }
 
 .navbar-brand {
+  padding-left: 2%;
   font-family: 'Orbitron', sans-serif;
   font-size: 1.5rem;
   color: var(--text-primary) !important;
@@ -45,6 +47,10 @@ body {
 
 .btn-primary:hover {
   background: linear-gradient(45deg, var(--primary-red) 0%, var(--dark-bg) 100%);
+}
+
+.d-flex {
+  padding-right: 2%;
 }
 
 /* Forms */
