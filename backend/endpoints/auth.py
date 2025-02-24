@@ -37,8 +37,8 @@ def login():
         return jsonify({"error": "Username and password are required"}), 400
     
     try:
-        login_user(username, password)
-        return jsonify({"message": "User logged in successfully"}), 200
+        token = login_user(username, password)
+        return jsonify({"message": "User logged in successfully", "token": token}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 401
     
