@@ -1,26 +1,8 @@
 // src/components/SeasonSelector.js
-import { useState, useEffect } from 'react';
-import axios from 'axios';
 
-const SeasonSelector = ({ onSeasonSelect }) => {
-  const [seasons, setSeasons] = useState([]);
-  const [selectedSeason, setSelectedSeason] = useState('');
-
-  useEffect(() => {
-    const fetchSeasons = async () => {
-      try {
-        const response = await axios.get('/api/seasons');
-        setSeasons(response.data);
-      } catch (error) {
-        console.error('Error fetching seasons:', error);
-      }
-    };
-    fetchSeasons();
-  }, []);
-
+const SeasonSelector = ({ onSeasonSelect, minYear = 2019, maxYear = 2024 }) => {
   const handleSeasonChange = (e) => {
     const season = e.target.value;
-    setSelectedSeason(season);
     onSeasonSelect(season);
   };
 
@@ -29,11 +11,11 @@ const SeasonSelector = ({ onSeasonSelect }) => {
       <label className="form-label">Select F1 Season:</label>
       <select 
         className="form-select"
-        value={selectedSeason}
+        defaultValue=""
         onChange={handleSeasonChange}
       >
-        <option value="">Choose a season</option>
-        {seasons.map((season) => (
+        <option value="" disabled>Choose a season</option>
+        {Array.from({ length: maxYear - minYear + 1 }, (_, i) => minYear + i).map((season) => (
           <option key={season} value={season}>{season}</option>
         ))}
       </select>
