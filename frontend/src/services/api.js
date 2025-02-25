@@ -1,16 +1,30 @@
 // src/services/api.js
 import axios from 'axios';
 
+const API = axios.create({
+  baseURL: 'http://localhost:3001/api',
+  withCredentials: true
+});
+
 // Base URLs for different API groups
 const TELEMETRY_BASE = 'http://localhost:3001/api/telemetry';
 const AUTH_BASE = 'http://localhost:3001/api/auth';           
 
+API.interceptors.request.use(config => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+
 export const fetchTracks = async (year) => {
   try {
-    const response = await axios.get(`${TELEMETRY_BASE}/fetch/tracklist`, {
+    const response = await API.get(`/telemetry/fetch/tracklist`, {
       params: { year }
     });
-    return Object.values(response.data); 
+    return Object.values(response.data);
   } catch (error) {
     console.error('Error fetching tracks:', error);
     throw error;
