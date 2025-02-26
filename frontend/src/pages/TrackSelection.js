@@ -17,9 +17,10 @@ const TrackSelection = () => {
     const fetchTracks = async () => {
       if (selectedSeason) {
         try {
+          console.log("HERE from TrackSelection.js")
           setIsLoading(true);
           setError('');
-          const response = await axios.get('/api/fetch/tracklist', {
+          const response = await axios.get('/api/telemetry/fetch/tracklist', {
             params: { year: selectedSeason }
           });
           

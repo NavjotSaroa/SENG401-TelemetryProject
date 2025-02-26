@@ -19,17 +19,18 @@ API.interceptors.request.use(config => {
 });
 
 
-export const fetchTracks = async (year) => {
-  try {
-    const response = await API.get(`/telemetry/fetch/tracklist`, {
-      params: { year }
-    });
-    return Object.values(response.data);
-  } catch (error) {
-    console.error('Error fetching tracks:', error);
-    throw error;
-  }
-};
+// export const fetchTracks = async (year) => {
+//   console.log("fetchTracks in api.js");
+//   try {
+//     const response = await axios.get(`${TELEMETRY_BASE}/fetch/tracklist`, {
+//       params: { year }
+//     });
+//     return Object.values(response.data);
+//   } catch (error) {
+//     console.error('Error fetching tracks:', error);
+//     throw error;
+//   }
+// };
 
 export const fetchDrivers = async (year, track) => {
   try {
