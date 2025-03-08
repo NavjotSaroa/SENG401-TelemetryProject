@@ -1,16 +1,16 @@
-### 
+###
 # Test getting tracklist for a chosen F1 season
 GET http://localhost:3001/api/telemetry/fetch/tracklist?year=2023
 
-### 
+###
 # Test getting drivers for a chosen F1 race-weekend
 GET http://localhost:3001/api/telemetry/fetch/drivers?year=2023&track=Monaco
 
-### 
+###
 # Test getting plot for specific driver in chosen race-weekend's fastest qualifying lap (using broadcast initials)
 GET http://localhost:3001/api/telemetry/fetch/telemetry?year=2023&track=Monaco&driver=HAM
 
-### 
+###
 # Test getting plot for specific driver in chosen race-weekend's fastest qualifying lap (using driver number)
 GET http://localhost:3001/api/telemetry/fetch/telemetry?year=2021&track=Belgium&driver=44
 
@@ -29,7 +29,7 @@ GET http://localhost:3001/api/telemetry/fetch/drivers?year=bahrain&track=2023
 GET http://localhost:3001/api/telemetry/fetch/telemetry?year=2023&track=Bahrain&driver=Navjot
 GET http://localhost:3001/api/telemetry/fetch/telemetry?year=2023&track=Bahrain&driver=1024
 
-### 
+###
 # Test getting fastf1 telemetry data for specific driver, etc
 GET http://localhost:3001/api/telemetry/fetch/telemetry?year=2022&track=Monza&&driver=LEC
 Content-Type: application/json
@@ -65,3 +65,10 @@ Content-Type: application/json
     "username": "Mike@test.com",
     "password": "Guazouski?"
 }
+
+###
+# Test chatGPT prompting
+POST http://localhost:3001/api/report_gen/generate
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJNaWtlQHRlc3QuY29tIn0.csAEyoFrHm0b8oW1VtEo6_UjMcSxddv6uPhCfgXJKpE
+
+
