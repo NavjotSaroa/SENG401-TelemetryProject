@@ -1,8 +1,7 @@
 from flask import Blueprint, request, jsonify
 from middleware.auth import jwt_required
-import os
 from dotenv import load_dotenv
-from openai import OpenAI
+from services.gpt_service import single_driver_analysis
 
 # Initialize blueprint
 report_gen_api = Blueprint("report_gen_api", __name__)
@@ -13,21 +12,16 @@ load_dotenv()
 @jwt_required
 def generate():
     try:
-        client = OpenAI(api_key = os.getenv("OPENAI_KEY"))
+        track = request.args.get("track")
+        data = request.args.get("data")
 
-        completion = client.chat.completions.create(
-            model = "gpt-4o-mini",
-            store = True,
-            messages = [
-                {"role": "user", "content": "write me a short paragraph explaining how to cook."}
-            ]
-        )
-        # print(completion.choices[0].message)
-        message = completion.choices[0].message
-        return str(message.content)
+        # Check if the result returned an error
+        result = single_driver_analysis(track, data)
+        if isinstance(result, Exception):
+            return jsonify({"error": str(result)}), 500
+
+        return jsonify({"result": result.content}), 200
 
     except Exception as e:
-        return jsonify({"error": str(e)})
+        return jsonify({"error": e})
 
-    finally:
-        ...
