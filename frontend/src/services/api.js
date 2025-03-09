@@ -3,9 +3,12 @@ import axios from 'axios';
 
 const API = axios.create({
   baseURL: 'http://localhost:3001/api',
-  withCredentials: true
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Credentials': true
+  }
 });
-
 // Base URLs for different API groups
 const TELEMETRY_BASE = 'http://localhost:3001/api/telemetry';
 const AUTH_BASE = 'http://localhost:3001/api/auth';           
@@ -18,19 +21,6 @@ API.interceptors.request.use(config => {
   return config;
 });
 
-
-// export const fetchTracks = async (year) => {
-//   console.log("fetchTracks in api.js");
-//   try {
-//     const response = await axios.get(`${TELEMETRY_BASE}/fetch/tracklist`, {
-//       params: { year }
-//     });
-//     return Object.values(response.data);
-//   } catch (error) {
-//     console.error('Error fetching tracks:', error);
-//     throw error;
-//   }
-// };
 
 export const fetchDrivers = async (year, track) => {
   try {

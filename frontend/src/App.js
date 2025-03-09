@@ -5,15 +5,17 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-import CompareTelemetry from './pages/CompareTelemetry';
+import CompareTelemetry from './components/CompareTelemetry';
 import AnalysisReport from './pages/AnalysisReport';
 import TrackSelection from './pages/TrackSelection';
-import RaceDataEntry from './pages/RaceDataEntry';
+import RaceDataEntry from './components/RaceDataEntry';
+import DriverSelection from './pages/DriverSelection';  
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
 function App() {
   return (
+    
     <Router>
       <AuthProvider>
         <AnimatedBackground />
@@ -27,6 +29,9 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/select-track" element={<TrackSelection />} />
             <Route path="/enter-data/:trackId" element={<RaceDataEntry />} />
+            <Route path="/enter-data" element={<RaceDataEntry />} />
+            {/* Driver Selection Route */}
+            <Route path="/drivers/:year/:track" element={<DriverSelection />} />
             <Route path="/compare/:year/:track/:driver" element={<CompareTelemetry />} />
             <Route path="/analysis/:reportId" element={<AnalysisReport />} />
 
@@ -35,6 +40,7 @@ function App() {
 
             {/* 404 Fallback */}
             <Route path="*" element={<h1 className="text-racing">404 - Page Not Found</h1>} />
+            
           </Routes>
         </div>
       </AuthProvider>
