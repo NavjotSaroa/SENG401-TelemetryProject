@@ -1,58 +1,22 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import TelemetryPlot from '../components/TelemetryPlot';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 
-const AnalysisReport = () => {
-  const { reportId } = useParams();
-  const [report, setReport] = useState(null);
-
-  useEffect(() => {
-    const fetchReport = async () => {
-      try {
-        const res = await axios.get(`/api/reports/${reportId}`);
-        setReport(res.data);
-      } catch (error) {
-        console.error('Failed to load report:', error);
-      }
-    };
-    fetchReport();
-  }, [reportId]);
+function AnalysisReport() {
+  const { state } = useLocation();
+  const analysis = state?.analysis || 'No analysis available.';
 
   return (
-    <div className="analysis-report">
-      {report ? (
-        <>
-          <h2 className="text-racing">{report.title}</h2>
-          <div className="report-content">
-            <TelemetryPlot plotUrl={report.plotUrl} />
-            <div className="analysis-text mt-4 p-3">
-              <h4>AI Analysis</h4>
-              <p>{report.analysis}</p>
-              <div className="btn-group">
-                <a
-                  href={report.pdfUrl}
-                  className="btn btn-primary"
-                  download
-                >
-                  Download PDF
-                </a>
-                <a
-                  href={report.imageUrl}
-                  className="btn btn-success"
-                  download
-                >
-                  Download Image
-                </a>
-              </div>
-            </div>
-          </div>
-        </>
-      ) : (
-        <p>Loading report...</p>
-      )}
+    <div className="analysis-report-container">
+      <h2>Race Analysis Report</h2>
+      <pre className="analysis-content">{analysis}</pre>
+      <button 
+        className="btn btn-primary"
+        onClick={() => window.print()}
+      >
+        Export as PDF
+      </button>
     </div>
   );
-};
+}
 
 export default AnalysisReport;
