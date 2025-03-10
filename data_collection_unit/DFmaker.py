@@ -218,11 +218,11 @@ class LiveDFMaker():
         m_gear = buffer["car_telemetry"][0].m_carTelemetryData[driver_id].m_gear
 
         extracted_data = {
-            "m_lapDistance" : m_lapDistance,
-            "m_speed": m_speed,
-            "m_throttle" : m_throttle,
-            "m_brake" : m_brake,
-            "m_gear" : m_gear
+            "Distance" : m_lapDistance,
+            "Speed": m_speed,
+            "Throttle" : m_throttle,
+            "Brake" : m_brake,
+            "nGear" : m_gear
         }
 
         return extracted_data
@@ -247,18 +247,17 @@ class LiveDFMaker():
     
     def export_dataframe(self):
         """
-        Exports the dataframe in CSV and parquet format.
+        Exports the dataframe in JSON format.
 
         Args:
             None
         
         Returns:
-            CSV and parquet files for the dataframe.
+            JSON files for the dataframe.
         """
         
         print("Exporting Dataframe...")
-        self.dataframe.to_csv(f"{self.GAME_VERSION}_{self.SESSION_UID}_{self.SESSION_TIME}.csv")
-        self.dataframe.to_parquet(f"{self.GAME_VERSION}_{self.SESSION_UID}_{self.SESSION_TIME}.parquet")
+        self.dataframe.to_json(f"{self.GAME_VERSION}_{self.SESSION_UID}_{self.SESSION_TIME}.csv")
         print("Dataframe Exported")
 
 if __name__ == "__main__":

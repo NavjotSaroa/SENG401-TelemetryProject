@@ -1,7 +1,11 @@
 from flask import Blueprint, request, send_file, abort
 from services.ff1_interact import FF1_Interact
+from middleware.auth import jwt_required
 from services.plotter import Plotter
 from matplotlib import pyplot as plt
+import base64
+import pandas as pd
+import json
 import io
 
 # Initialize blueprint
@@ -74,8 +78,7 @@ def fetch_drivers():
 
     return driver_list
 
-@request_handler.route('/fetch/telemetry', methods = ['GET'])
-def fetch_plot():
+def plot_helper(args, car_data = None):
     """
     Produces png plot of the chosen driver's fastest qualifying lap for the selected race weekend.
     (Displays speed, throttle usage, brake usage, gear usage vs. distance from start line)
@@ -89,18 +92,21 @@ def fetch_plot():
     Returns:
         PNG image of the plot
     """
-    
     try:
         # Extract args from query
-        season = int(request.args.get('year'))
-        track = request.args.get('track')
-        driver = request.args.get('driver')
+        season = int(args.get('year'))
+        track = args.get('track')
+        driver = args.get('driver')
+        theme = args.get('theme')
+        telemetry = FF1_Interact.request_telemetry(season, track, driver)
 
-        # Request relevant telemetry data from the Fast F1 library through FF1_Interact
-        car_data, circuit_info = FF1_Interact.request_telemetry(season, track, driver)
+        if not car_data:    # This would mean this is a pro driver plot, otherwise, the car_data would be provided by the user
+            car_data = telemetry[0]
+        
+        circuit_info = telemetry[1]
 
         plot_data = Plotter.plotting(car_data, circuit_info)    # Produces baseline matplotlib plot of telemetry
-        Plotter.styling(plot_data, 'cyberpunk')                 # Styles baseline plot
+        Plotter.styling(plot_data, theme)                 # Styles baseline plot
         # TODO: Make this more dynamic for users
 
         # Saves and sends PNG of plot
@@ -117,3 +123,16 @@ def fetch_plot():
         abort(403)
 
 
+
+
+@request_handler.route('/fetch/telemetry', methods = ['GET'])
+def fetch_plot():
+    plot_helper(request.args, None)
+
+
+@request_handler.route('/fetch/registered_telemetry', methods = ['GET'])
+@jwt_required
+def fetch_registered_plot(json_file_as_string):
+    json_file = json.loads(json_file_as_string)
+    car_data = pd.DataFrame(json_file)
+    plot_helper(request.args, car_data)
