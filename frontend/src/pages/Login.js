@@ -7,7 +7,7 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [authenticationMessage, setAuthenticationMessage] = useState('');
-  const { setUser } = useAuthContext();
+  const { setToken } = useAuthContext();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -33,11 +33,11 @@ function Login() {
       }
 
       const data = await response.json();
-      if (data) {
-        setUser(data.user);
+
+      if (data && data.token) {
         sessionStorage.setItem('jwtToken', data.token);
+        setToken(data.token);
         sessionStorage.setItem('username', data.username);
-        sessionStorage.setItem('user', JSON.stringify(data.user));
 
         navigate(location.state?.from || '/select-track');
       } else {

@@ -34,15 +34,15 @@ export const fetchDrivers = async (year, track) => {
   }
 };
 
-export const fetchTelemetryPlot = async (year, track, driver) => {
+export const fetchTelemetryPlot = async (year, track, driver, theme) => {
   try {
     const response = await axios.get(`${TELEMETRY_BASE}/fetch/telemetry`, {
-      params: { year, track, driver },
+      params: { year, track, driver, theme },
       responseType: 'blob' // for binary image data
     });
     return URL.createObjectURL(new Blob([response.data]));
   } catch (error) {
-    console.error('Error fetching telemetry:', error);
+    console.error('Error fetching telemetry:', error.response?.data || error.message);
     throw error;
   }
 };
