@@ -1,4 +1,4 @@
-from flask import Blueprint, request, send_file, abort
+from flask import Blueprint, request, send_file, abort, jsonify
 from services.ff1_interact import FF1_Interact
 from services.report_service import RegisteredUserPDFMaker, UnregisteredUserPDFMaker
 from services.gpt_service import *
@@ -128,36 +128,80 @@ def plot_helper(args, car_data = None):
     except Exception as e:
         abort(403)
 
-
-
-
 @request_handler.route('/fetch/telemetry', methods = ['GET'])
-def unregistered_handler():
-    plot_helper(request.args, None)   # Make plot
+def fetch_pro_plot():
+    return plot_helper(request.args, None)   # Make plot
+
+
+@request_handler.route('/fetch/unregistered_LLM_and_pdf', methods=['GET'])
+def fetch_pro_pdf():
 
     _, _, driver, _, telemetry = extract_args(request.args)
     data = telemetry[0]
     summary_text = single_driver_analysis(driver, data)
 
-    pdf_maker = UnregisteredUserPDFMaker()
+    output_pdf = f"{driver}_telemetry_report.pdf"
+    pdf_maker = UnregisteredUserPDFMaker(output_pdf)
     pdf_maker.generate_pdf(driver, summary_text)
 
+    return jsonify({
+        "driver": driver,
+        "summary_text": summary_text,
+        "pdf_url": f"/fetch/download_pdf?file={output_pdf}"
+    })
 
+@request_handler.route('/fetch/unregistered_download_pdf', methods=['GET'])
+def download_pdf():
+    file_path = request.args.get("file")
+    return send_file(file_path, as_attachment=True)
 
 
 @request_handler.route('/fetch/registered_telemetry', methods = ['GET'])
 @jwt_required
-def registered_handler(json_file_as_string):
+def fetch_user_plot():
+    json_file_as_string = request.args.get("user_data")
+    json_file = json.loads(json_file_as_string)
+    
+    user_data = pd.DataFrame.from_dict(json_file)
+    user_data = user_data.astype(float)
+    user_data.index = user_data.index.astype(int)
+
+    return plot_helper(request.args, user_data)
+
+
+
+@request_handler.route('/fetch/registered_LLM_and_pdf', methods=['GET'])
+@jwt_required
+def fetch_user_pdf():
+
+    _, _, driver, _, telemetry = extract_args(request.args)
+    pro_data = telemetry[0]
+
+    json_file_as_string = request.args.get("user_data")
     json_file = json.loads(json_file_as_string)
     
     user_data = pd.DataFrame.from_dict(json_file)
     user_data = user_data.astype(float)
     user_data.index = user_data.index.astype(int)
     
-    _, _, driver, _, telemetry = extract_args(request.args)
-    pro_data = telemetry[0]
     summary_text = comparative_analysis(driver, user_data, pro_data)
 
-    pdf_maker = UnregisteredUserPDFMaker()
+    output_pdf = f"{driver}_telemetry_report.pdf"
+    pdf_maker = RegisteredUserPDFMaker(output_pdf)
     pdf_maker.generate_pdf(driver, summary_text)
+
+    return jsonify({
+        "driver": driver,
+        "summary_text": summary_text,
+        "pdf_url": f"/fetch/download_pdf?file={output_pdf}"
+    })
+
+@request_handler.route('/fetch/registered_download_pdf', methods=['GET'])
+@jwt_required
+def download_pdf():
+    file_path = request.args.get("file")
+    return send_file(file_path, as_attachment=True)
+
+
+
 
