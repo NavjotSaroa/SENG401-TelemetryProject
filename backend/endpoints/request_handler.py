@@ -1,5 +1,7 @@
 from flask import Blueprint, request, send_file, abort
 from services.ff1_interact import FF1_Interact
+from services.report_service import RegisteredUserPDFMaker, UnregisteredUserPDFMaker
+from services.gpt_service import *
 from middleware.auth import jwt_required
 from services.plotter import Plotter
 from matplotlib import pyplot as plt
@@ -78,6 +80,15 @@ def fetch_drivers():
 
     return driver_list
 
+def extract_args(args):
+    season = int(args.get('year'))
+    track = args.get('track')
+    driver = args.get('driver')
+    theme = args.get('theme')
+    telemetry = FF1_Interact.request_telemetry(season, track, driver)
+
+    return (season, track, driver, theme, telemetry)
+
 def plot_helper(args, car_data = None):
     """
     Produces png plot of the chosen driver's fastest qualifying lap for the selected race weekend.
@@ -94,11 +105,7 @@ def plot_helper(args, car_data = None):
     """
     try:
         # Extract args from query
-        season = int(args.get('year'))
-        track = args.get('track')
-        driver = args.get('driver')
-        theme = args.get('theme')
-        telemetry = FF1_Interact.request_telemetry(season, track, driver)
+        _, _, _, theme, telemetry = extract_args(args)
 
         if not car_data:    # This would mean this is a pro driver plot, otherwise, the car_data would be provided by the user
             car_data = telemetry[0]
@@ -106,7 +113,7 @@ def plot_helper(args, car_data = None):
         circuit_info = telemetry[1]
 
         plot_data = Plotter.plotting(car_data, circuit_info)    # Produces baseline matplotlib plot of telemetry
-        Plotter.styling(plot_data, theme)                 # Styles baseline plot
+        Plotter.styling(plot_data, theme)                       # Styles baseline plot
 
         # Saves and sends PNG of plot
         image_io = io.BytesIO()
@@ -125,18 +132,32 @@ def plot_helper(args, car_data = None):
 
 
 @request_handler.route('/fetch/telemetry', methods = ['GET'])
-def fetch_plot():
-    plot_helper(request.args, None)
+def unregistered_handler():
+    plot_helper(request.args, None)   # Make plot
+
+    _, _, driver, _, telemetry = extract_args(request.args)
+    data = telemetry[0]
+    summary_text = single_driver_analysis(driver, data)
+
+    pdf_maker = UnregisteredUserPDFMaker()
+    pdf_maker.generate_pdf(driver, summary_text)
+
+
 
 
 @request_handler.route('/fetch/registered_telemetry', methods = ['GET'])
 @jwt_required
-def fetch_registered_plot(json_file_as_string):
+def registered_handler(json_file_as_string):
     json_file = json.loads(json_file_as_string)
     
-    car_data = pd.DataFrame.from_dict(json_file)
-    car_data = car_data.astype(float)
-    car_data.index = car_data.index.astype(int)
+    user_data = pd.DataFrame.from_dict(json_file)
+    user_data = user_data.astype(float)
+    user_data.index = user_data.index.astype(int)
     
-    plot_helper(request.args, car_data)
+    _, _, driver, _, telemetry = extract_args(request.args)
+    pro_data = telemetry[0]
+    summary_text = comparative_analysis(driver, user_data, pro_data)
+
+    pdf_maker = UnregisteredUserPDFMaker()
+    pdf_maker.generate_pdf(driver, summary_text)
 
