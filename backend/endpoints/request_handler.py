@@ -127,7 +127,7 @@ def plot_helper(args, car_data = None):
 @request_handler.route('/fetch/telemetry', methods = ['GET'])
 def fetch_plot():
     plot_helper(request.args, None)
-
+    return plot_helper(request.args, None)
 
 @request_handler.route('/fetch/registered_telemetry', methods = ['GET'])
 @jwt_required
@@ -138,5 +138,5 @@ def fetch_registered_plot(json_file_as_string):
     car_data = car_data.astype(float)
     car_data.index = car_data.index.astype(int)
     
-    plot_helper(request.args, car_data)
+    return plot_helper(request.args, car_data)
 
