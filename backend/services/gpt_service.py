@@ -47,6 +47,15 @@ def comparative_analysis(track, user_data, pro_data, circuit_info):
     try:
         client = OpenAI(api_key=os.getenv("OPENAI_KEY"))
 
+        if isinstance(pro_data, pd.DataFrame):
+            pro_data = pro_data.to_json(orient="records")
+
+        if isinstance(circuit_info, pd.DataFrame):
+            circuit_info = circuit_info.to_json(orient="records")
+
+        if isinstance(user_data, pd.DataFrame):
+            user_data = user_data.to_json(orient="records")
+
         prompt = f"Here is the telemetry data of a professional F1 driver: {pro_data}.\
             Here is the telemetry data of my driving: {user_data}. I am an average driver.\
             Here is information of where each corner on a circuit is in terms of distance from the start line: {circuit_info}\
