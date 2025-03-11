@@ -15,6 +15,7 @@ function RaceDataEntry() {
     sector2: '',
     sector3: '',
   });
+  const [theme, setTheme] = useState('default');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -33,6 +34,7 @@ function RaceDataEntry() {
         driver,
         user_data: formData,
       }, {
+        params: { theme },
         withCredentials: true,
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
@@ -104,6 +106,21 @@ function RaceDataEntry() {
             className="form-control"
             required
           />
+        </div>
+       
+        <div className="mb-3">
+          <label className="form-label">Select Plot Theme:</label>
+          <select
+            className="form-select"
+            value={theme}
+            onChange={(e) => setTheme(e.target.value)}
+            required
+          >
+            <option value="default">Default</option>
+            <option value="cyberpunk">Cyberpunk</option>
+            
+            <option value="barbie">Barbiee</option>
+          </select>
         </div>
         {loading && <p>Loading...</p>}
         {error && <p className="alert alert-danger">{error}</p>}
