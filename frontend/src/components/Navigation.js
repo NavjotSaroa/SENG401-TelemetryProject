@@ -3,7 +3,7 @@ import { useAuthContext } from '../context/AuthContext';
 import { GiRaceCar } from 'react-icons/gi';
 
 const Navigation = () => {
-  const { user, logout } = useAuthContext();
+  const { token, logout } = useAuthContext();
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -13,13 +13,12 @@ const Navigation = () => {
       </Link>
       <div className="collapse navbar-collapse">
         <ul className="navbar-nav me-auto">
-          
-          {/* There are two homes, Home and Logo */}
           <li className="nav-item">
             <NavLink className="nav-link" to="/">Home</NavLink>
           </li>
 
-          {user && (
+          {/* If token exists, show protected routes */}
+          {token && (
             <>
               <li className="nav-item">
                 <NavLink className="nav-link" to="/dashboard">Dashboard</NavLink>
@@ -30,8 +29,10 @@ const Navigation = () => {
             </>
           )}
         </ul>
+
         <div className="d-flex">
-          {user ? (
+          {/* If token exists, show Logout button */}
+          {token ? (
             <button className="btn btn-outline-light" onClick={logout}>
               Logout
             </button>
