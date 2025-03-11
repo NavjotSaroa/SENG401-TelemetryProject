@@ -138,7 +138,8 @@ def fetch_pro_pdf():
 
     _, _, driver, _, telemetry = extract_args(request.args)
     data = telemetry[0]
-    summary_text = single_driver_analysis(driver, data)
+    circuit_info = telemetry[1]
+    summary_text = single_driver_analysis(driver, data, circuit_info)
 
     output_pdf = f"{driver}_telemetry_report.pdf"
     pdf_maker = UnregisteredUserPDFMaker(output_pdf)
@@ -176,6 +177,7 @@ def fetch_user_pdf():
 
     _, _, driver, _, telemetry = extract_args(request.args)
     pro_data = telemetry[0]
+    circuit_info = telemetry[1]
 
     json_file_as_string = request.args.get("user_data")
     json_file = json.loads(json_file_as_string)
@@ -184,7 +186,7 @@ def fetch_user_pdf():
     user_data = user_data.astype(float)
     user_data.index = user_data.index.astype(int)
     
-    summary_text = comparative_analysis(driver, user_data, pro_data)
+    summary_text = comparative_analysis(driver, user_data, pro_data, circuit_info)
 
     output_pdf = f"{driver}_telemetry_report.pdf"
     pdf_maker = RegisteredUserPDFMaker(output_pdf)
