@@ -107,7 +107,6 @@ def plot_helper(args, car_data = None):
 
         plot_data = Plotter.plotting(car_data, circuit_info)    # Produces baseline matplotlib plot of telemetry
         Plotter.styling(plot_data, theme)                 # Styles baseline plot
-        # TODO: Make this more dynamic for users
 
         # Saves and sends PNG of plot
         image_io = io.BytesIO()
@@ -134,5 +133,10 @@ def fetch_plot():
 @jwt_required
 def fetch_registered_plot(json_file_as_string):
     json_file = json.loads(json_file_as_string)
-    car_data = pd.DataFrame(json_file)
+    
+    car_data = pd.DataFrame.from_dict(json_file)
+    car_data = car_data.astype(float)
+    car_data.index = car_data.index.astype(int)
+    
     plot_helper(request.args, car_data)
+
