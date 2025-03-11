@@ -101,15 +101,3 @@ class RegisteredUserPDFMaker(UnregisteredUserPDFMaker):
             }}
         \\end{{figure}}
         """
-
-if __name__ == "__main__":
-    driver_name = "John Doe"
-    summary_text = "This is a detailed summary of the telemetry analysis."
-
-    # For an unregistered user (one image, basic title)
-    unregistered_pdf_maker = UnregisteredUserPDFMaker("unregistered_report.pdf")
-    unregistered_pdf_maker.generate_pdf(driver_name, summary_text)
-
-    # For a registered user (two images, modified title)
-    registered_pdf_maker = RegisteredUserPDFMaker("registered_report.pdf")
-    registered_pdf_maker.generate_pdf(driver_name, summary_text)
