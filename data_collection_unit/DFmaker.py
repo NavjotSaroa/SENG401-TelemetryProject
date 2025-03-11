@@ -12,7 +12,7 @@ import copy
 import datetime
 
 class LiveDFMaker():
-    def __init__(self, required_packets = [2, 6], required_columns = ["m_speed", "m_throttle", "m_brake", "m_gear", "m_lapDistance"]):
+    def __init__(self, required_packets = [2, 6], required_columns = ["Speed", "Throttle", "Brake", "nGear", "Distance"]):
         # UDP stuff
         self.UDP_conn = self.get_udp_session()
         self.sock = self.UDP_conn.start_session()
@@ -257,7 +257,7 @@ class LiveDFMaker():
         """
         
         print("Exporting Dataframe...")
-        self.dataframe.to_json(f"{self.GAME_VERSION}_{self.SESSION_UID}_{self.SESSION_TIME}.csv")
+        self.dataframe.to_json(f"data_collection_unit/{self.GAME_VERSION}_{self.SESSION_UID}_{self.SESSION_TIME}.json")
         print("Dataframe Exported")
 
 if __name__ == "__main__":
