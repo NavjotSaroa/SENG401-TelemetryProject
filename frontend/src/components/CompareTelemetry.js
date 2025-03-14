@@ -1,42 +1,45 @@
 // src/pages/CompareTelemetry.js
-
-import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { fetchTelemetryPlot } from '../services/api';
+import TelemetryPlot from '../components/TelemetryPlot';
 import '../App.css';
 
 const CompareTelemetry = () => {
-  // Expect URL: /compare/:year/:track/:driver
+  // Extract URL parameters for year, track, and driver
   const { year, track, driver } = useParams();
-  const [theme, setTheme] = useState('default'); 
-  const [plotUrl, setPlotUrl] = useState([]);
-  
+  const navigate = useNavigate();
+
+  const [theme, setTheme] = useState('default');
+  const [plotUrl, setPlotUrl] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetch("/themes.json")
-      .then((response) => response.json())
-      .then((data) => setTheme(Object.entries(data)))
-      .catch((err) => console.error("Error loading themes:", err));
-  }, []);
-
+  // Fetch the telemetry plot with the selected theme
   const handleShowTelemetry = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
     try {
-      // Call the API 
       const url = await fetchTelemetryPlot(year, track, driver, theme);
       setPlotUrl(url);
     } catch (err) {
-      console.error("Error fetching telemetry plot:", err);
-      setError("Failed to load telemetry plot. Please try again later.");
+      console.error('Error fetching telemetry plot:', err);
+      setError('Failed to load telemetry plot. Please try again later.');
+    } finally {
+      setLoading(false);
     }
+  };
+
+  // Proceed to data entry page, passing state (year, track, driver)
+  const proceedToDataEntry = () => {
+    navigate('/enter-data', { state: { year, track, driver, plotUrl } });
   };
 
   return (
     <div className="compare-telemetry-container">
       <h2 className="text-racing">
-        Telemetry for {track} {year} - Driver: {driver}
+        Telemetry for {track} ({year}) - Driver: {driver}
       </h2>
       <form onSubmit={handleShowTelemetry}>
         <div className="mb-3">
@@ -49,18 +52,22 @@ const CompareTelemetry = () => {
           >
             <option value="default">Default</option>
             <option value="cyberpunk">Cyberpunk</option>
-            <option value="barbie">barbie</option>
-          
+            <option value="barbie">Barbie</option>
+            
           </select>
         </div>
-        <button type="submit" className="btn btn-primary">
-          Show Telemetry
+        <button type="submit" className="btn btn-primary" disabled={loading}>
+          {loading ? 'Loading...' : 'Show Telemetry'}
         </button>
       </form>
       {error && <p className="alert alert-danger mt-3">{error}</p>}
       {plotUrl && (
         <div className="mt-4">
-          <img src={plotUrl} alt="Telemetry Plot" style={{ maxWidth: '100%' }} />
+          <TelemetryPlot plotUrl={plotUrl} />
+          {/* Button to proceed to data entry page */}
+          <button onClick={proceedToDataEntry} className="btn btn-secondary mt-3">
+            Proceed to Data Entry
+          </button>
         </div>
       )}
     </div>
