@@ -46,7 +46,7 @@ const Register = () => {
 
       const registrationData = await registrationResponse.json();
 
-      await fetch(`http://localhost:8080/user/${registrationData.user}/update-details`, {
+      await fetch(`http://localhost:3001/user/${registrationData.user}/update-details`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(registrationData),

@@ -23,7 +23,7 @@ def fetch_tracklist():
             - 'year', between 2019 and 2024
 
     Returns:
-        track_list: JSON object with the tracks for the chosen season. Formatted as follows.    
+        track_list: JSON object with the tracks for the chosen season. Formatted as follows.
         {
             "0": "track_0",
             "1": "track_1",
@@ -33,17 +33,17 @@ def fetch_tracklist():
 
     try:
         # Extract args from query
-        season = int(request.args.get('year'))
+        season = request.args.get('year')
+        season = int(season) if season else abort(403)
 
-        if season < 2019 or season > 2024:  
+        if season < 2019 or season > 2024:
             abort(400)
 
         # Request track list from Fast F1 library through FF1_Interact
         track_list = FF1_Interact.request_track_list(season)
     except Exception as e:
         abort(404)
-
-    return track_list
+    return jsonify(track_list)
 
 @request_handler.route('/fetch/drivers', methods = ['GET'])
 def fetch_drivers():
@@ -51,12 +51,12 @@ def fetch_drivers():
     Returns a json of drivers for the queried race weekend.
 
     Args:
-        None, arguments as passed as query with parameters: 
+        None, arguments as passed as query with parameters:
         - 'year', between 2019 and 2024
         - 'track', chosen from track_list from fetch_tracklist
 
     Returns:
-        driver_list: JSON object with the drivers who participated in the chosen race-weekend's 
+        driver_list: JSON object with the drivers who participated in the chosen race-weekend's
         qualifying, along with the driver number.
         {
             "driver0_number": "driver0",
@@ -67,7 +67,8 @@ def fetch_drivers():
 
     try:
         # Extract args from query
-        season = int(request.args.get('year'))
+        season = request.args.get('year')
+        season = int(season) if season else abort(403)
         track = request.args.get('track')   # Fast F1 actually does a fuzzy matching and guesses track name, so this will never fail
 
         if season < 2019 or season > 2024:  # Data is only available between 2019 and 2024
@@ -78,7 +79,7 @@ def fetch_drivers():
     except Exception as e:
         abort(400)
 
-    return driver_list
+    return jsonify(driver_list)
 
 def extract_args(args):
     season = int(args.get('year'))
@@ -109,7 +110,7 @@ def plot_helper(args, car_data = None):
 
         if not car_data:    # This would mean this is a pro driver plot, otherwise, the car_data would be provided by the user
             car_data = telemetry[0]
-        
+
         circuit_info = telemetry[1]
 
         plot_data = Plotter.plotting(car_data, circuit_info)    # Produces baseline matplotlib plot of telemetry
@@ -152,17 +153,17 @@ def fetch_pro_pdf():
     })
 
 @request_handler.route('/fetch/unregistered_download_pdf', methods=['GET'])
-def download_pdf():
+def unregistered_download_pdf():
     file_path = request.args.get("file")
-    return send_file(file_path, as_attachment=True)
+    return send_file(file_path, as_attachment=True) if file_path else abort(403)
 
 
 @request_handler.route('/fetch/registered_telemetry', methods = ['GET'])
 @jwt_required
 def fetch_user_plot():
     json_file_as_string = request.args.get("user_data")
-    json_file = json.loads(json_file_as_string)
-    
+    json_file = json.loads(json_file_as_string) if json_file_as_string else abort(403)
+
     user_data = pd.DataFrame.from_dict(json_file)
     user_data = user_data.astype(float)
     user_data.index = user_data.index.astype(int)
@@ -180,12 +181,12 @@ def fetch_user_pdf():
     circuit_info = telemetry[1]
 
     json_file_as_string = request.args.get("user_data")
-    json_file = json.loads(json_file_as_string)
-    
+    json_file = json.loads(json_file_as_string) if json_file_as_string else abort(403)
+
     user_data = pd.DataFrame.from_dict(json_file)
     user_data = user_data.astype(float)
     user_data.index = user_data.index.astype(int)
-    
+
     summary_text = comparative_analysis(driver, user_data, pro_data, circuit_info)
 
     output_pdf = f"{driver}_telemetry_report.pdf"
@@ -200,9 +201,9 @@ def fetch_user_pdf():
 
 @request_handler.route('/fetch/registered_download_pdf', methods=['GET'])
 @jwt_required
-def download_pdf():
+def registered_download_pdf():
     file_path = request.args.get("file")
-    return send_file(file_path, as_attachment=True)
+    return send_file(file_path, as_attachment=True) if file_path else abort(403)
 
 
 

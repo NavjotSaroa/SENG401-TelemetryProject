@@ -9,7 +9,7 @@ class UnregisteredUserPDFMaker:
 
     def generate_latex_content(self):
         """Generates base LaTeX content for unregistered users."""
-        return f"""
+        return """
         \\documentclass{{article}}
         \\usepackage{{graphicx}}
         \\usepackage{{lipsum}}
@@ -17,7 +17,7 @@ class UnregisteredUserPDFMaker:
         \\begin{{document}}
 
         % Title with dynamic driver name
-        \\title{{{self.get_title()}}}
+        \\title{{{}}}
         \\maketitle
 
         % Placeholder for first image or blank space if missing
@@ -33,14 +33,14 @@ class UnregisteredUserPDFMaker:
             }}
         \\end{{figure}}
 
-        {self.get_additional_images()}  % Extra images for registered users
+        {}  % Extra images for registered users
 
         % Placeholder for injected text or lorem ipsum if missing
         \\section{{Analysis Summary}}
-        {self.summary_text if self.summary_text else '\\lipsum[1]'}  % Use summary text or Lorem Ipsum
+        {}
 
         \\end{{document}}
-        """
+        """.format(self.get_title(), self.get_additional_images(), self.summary_text if self.summary_text else '\\lipsum[1]')
 
     def get_title(self):
         """Returns the base title for unregistered users."""
@@ -48,7 +48,7 @@ class UnregisteredUserPDFMaker:
 
     def get_additional_images(self):
         """Returns an empty string for unregistered users (no extra images)."""
-        return ""
+        return f""
 
     def generate_pdf(self, driver_name, summary_text):
         """Generates the LaTeX file and compiles it into a PDF."""
