@@ -128,6 +128,15 @@ def plot_helper(args, car_data = None):
         return jsonify({"error": str(e)}), 403
 
 
+def extract_args(args):
+    season = int(args.get('year'))
+    track = args.get('track')
+    driver = args.get('driver')
+    theme = args.get('theme')
+    telemetry = FF1_Interact.request_telemetry(season, track, driver)
+
+    return (season, track, driver, theme, telemetry)
+
 @request_handler.route('/fetch/telemetry', methods = ['GET'])
 def fetch_pro_plot():
     return plot_helper(request.args, None)   # Make plot
