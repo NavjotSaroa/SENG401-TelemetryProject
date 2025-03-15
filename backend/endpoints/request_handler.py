@@ -77,6 +77,7 @@ def fetch_drivers():
         if season < 2019 or season > 2024:  # Data is only available between 2019 and 2024
             raise ValueError("Invalid season. Year must be between 2019 and 2024.")
 
+
         # Request driver list from Fast F1 library through FF1_Interact
         driver_list = FF1_Interact.request_drivers(season, track)
     except Exception as e:
@@ -121,7 +122,7 @@ def plot_helper(args, car_data = None):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-
+      
     try:
         return send_file(image_io, mimetype = 'image/png')
     except Exception as e:
@@ -136,6 +137,7 @@ def extract_args(args):
     telemetry = FF1_Interact.request_telemetry(season, track, driver)
 
     return (season, track, driver, theme, telemetry)
+
 
 @request_handler.route('/fetch/telemetry', methods = ['GET'])
 def fetch_pro_plot():

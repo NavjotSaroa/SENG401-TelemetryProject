@@ -2,7 +2,8 @@ import fastf1 as ff1
 import pandas as pd
 
 ff1.ergast.interface.BASE_URL = "https://api.jolpi.ca/ergast/f1"
-# ff1.Cache.enable_cache('services\cache')
+ff1.Cache.enable_cache('services\cache')
+
 
 class FF1_Interact():
     @staticmethod
