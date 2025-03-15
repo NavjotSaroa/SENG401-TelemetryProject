@@ -2,6 +2,7 @@ import fastf1 as ff1
 import pandas as pd
 
 ff1.ergast.interface.BASE_URL = "https://api.jolpi.ca/ergast/f1"
+# ff1.Cache.enable_cache('services\cache')
 
 class FF1_Interact():
     @staticmethod
@@ -21,20 +22,20 @@ class FF1_Interact():
             raise ValueError
 
         try:
-            track_list = ff1.get_event_schedule(year)["Country"]    # Retrieve dataframe of track list
+            track_list = ff1.get_event_schedule(year, include_testing = False)["EventName"]    # Retrieve dataframe of track list
             track_list_json = track_list.to_json()                  # Convert dataframe to json
             return track_list_json
         except Exception as e:
             raise RuntimeError
 
     @staticmethod
-    def request_drivers(year, country):
+    def request_drivers(year, event):
         """
         Fetches drivers list from the Fast F1 library
 
         Args:
             - year: int
-            - country: str
+            - event: str
 
         Returns:
             JSON object of drivers, converted from the pandas dataframe that is received from fastf1,
@@ -45,7 +46,7 @@ class FF1_Interact():
             raise ValueError
 
         try:
-            session = ff1.get_session(year, country, 'Q')           # Retrieve session data (Session object)
+            session = ff1.get_session(year, event, 'Q')           # Retrieve session data (Session object)
             session.load()                                          # Load session to get all data
             drivers = session.results['FullName']                   # Extract dataframe of driver names
             drivers_json = drivers.to_json()                        # Convert dataframe to json
@@ -54,13 +55,13 @@ class FF1_Interact():
             raise RuntimeError
         
     @staticmethod
-    def request_telemetry(year, country, driver):
+    def request_telemetry(year, event, driver):
         """
         Fetches driver's telemetry from the Fast F1 library
 
         Args:
             - year: int
-            - country: str
+            - event: str
             - driver: str
 
         Returns:
@@ -72,7 +73,7 @@ class FF1_Interact():
             raise ValueError
 
         try:
-            session = ff1.get_session(year, country, 'Q')                   # Retrieve session data (Session object)
+            session = ff1.get_session(year, event, 'Q')                   # Retrieve session data (Session object)
             session.load()                                                  # Load session to get all data
             fastest_lap = session.laps.pick_drivers(driver).pick_fastest()  # Extract telemetry data 
             car_data = fastest_lap.get_car_data().add_distance()            # Add column for distance (for corner markers)
@@ -89,4 +90,4 @@ class FF1_Interact():
             return (car_data_relevant, circuit_info)
         
         except Exception as e:
-            raise RuntimeError
+            print(e)
