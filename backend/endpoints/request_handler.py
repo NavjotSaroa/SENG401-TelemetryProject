@@ -1,6 +1,7 @@
 from flask import Blueprint, request, send_file, abort, jsonify
 from services.ff1_interact import FF1_Interact
 from middleware.auth import jwt_required
+from services.gpt_service import *
 from services.plotter import Plotter
 from matplotlib import pyplot as plt
 import base64
@@ -198,14 +199,9 @@ def fetch_user_pdf():
 
     summary_text = comparative_analysis(driver, user_data, pro_data, circuit_info)
 
-    output_pdf = f"{driver}_telemetry_report.pdf"
-    pdf_maker = RegisteredUserPDFMaker(output_pdf)
-    pdf_maker.generate_pdf(driver, summary_text)
-
     return jsonify({
         "driver": driver,
         "summary_text": summary_text,
-        "pdf_url": f"/fetch/download_pdf?file={output_pdf}"
     })
 
 @request_handler.route('/fetch/registered_download_pdf', methods=['GET'])
