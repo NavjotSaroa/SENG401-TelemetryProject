@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+// import { useLocation, useNavigate } from 'react-router-dom';
 import { fetchAnalysisAndPdfUnregistered, fetchAnalysisAndPdfRegistered } from '../services/api';
 import '../styles/Analysis-Report.css';
 
@@ -8,8 +8,8 @@ function AnalysisReport() {
   const [pdfUrl, setPdfUrl] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const { state } = useLocation();
-  const navigate = useNavigate();
+  // const { state } = useLocation();
+  // const navigate = useNavigate();
   
   const isLoggedIn = localStorage.getItem('jwt');
 
