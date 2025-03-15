@@ -1,6 +1,7 @@
-from flask import Blueprint, request, send_file, abort
+from flask import Blueprint, request, send_file, abort, jsonify
 from services.ff1_interact import FF1_Interact
 from middleware.auth import jwt_required
+from services.gpt_service import *
 from services.plotter import Plotter
 from matplotlib import pyplot as plt
 import base64
@@ -33,13 +34,16 @@ def fetch_tracklist():
         # Extract args from query
         season = int(request.args.get('year'))
 
+        if not season:
+            raise ValueError("Season not provided.")
+
         if season < 2019 or season > 2024:  
-            abort(400)
+            raise ValueError("Invalid season. Year must be between 2019 and 2024.")
 
         # Request track list from Fast F1 library through FF1_Interact
         track_list = FF1_Interact.request_track_list(season)
     except Exception as e:
-        abort(404)
+        return jsonify({"error": str(e)}), 400
 
     return track_list
 
@@ -66,15 +70,19 @@ def fetch_drivers():
     try:
         # Extract args from query
         season = int(request.args.get('year'))
-        track = request.args.get('track')   # Fast F1 actually does a fuzzy matching and guesses track name, so this will never fail
+        track = request.args.get('track')   # Fast F1 actually does a fuzzy match and guesses track name, so this will never fail. It will just provided unexpected results if the name is invalid. But it won't break the website.
+
+        if not season:
+            raise ValueError("Season not provided.")
 
         if season < 2019 or season > 2024:  # Data is only available between 2019 and 2024
-            abort(400)
+            raise ValueError("Invalid season. Year must be between 2019 and 2024.")
+
 
         # Request driver list from Fast F1 library through FF1_Interact
         driver_list = FF1_Interact.request_drivers(season, track)
     except Exception as e:
-        abort(400)
+        return jsonify({"error": str(e)}), 400
 
     return driver_list
 
@@ -114,13 +122,21 @@ def plot_helper(args, car_data = None):
         image_io.seek(0)
 
     except Exception as e:
-        abort(400)
-
+        return jsonify({"error": str(e)}), 400
     try:
         return send_file(image_io, mimetype = 'image/png')
     except Exception as e:
-        abort(403)
+        return jsonify({"error": str(e)}), 403
 
+
+def extract_args(args):
+    season = int(args.get('year'))
+    track = args.get('track')
+    driver = args.get('driver')
+    theme = args.get('theme')
+    telemetry = FF1_Interact.request_telemetry(season, track, driver)
+
+    return (season, track, driver, theme, telemetry)
 
 
 @request_handler.route('/fetch/telemetry', methods = ['GET'])
@@ -183,14 +199,9 @@ def fetch_user_pdf():
 
     summary_text = comparative_analysis(driver, user_data, pro_data, circuit_info)
 
-    output_pdf = f"{driver}_telemetry_report.pdf"
-    pdf_maker = RegisteredUserPDFMaker(output_pdf)
-    pdf_maker.generate_pdf(driver, summary_text)
-
     return jsonify({
         "driver": driver,
         "summary_text": summary_text,
-        "pdf_url": f"/fetch/download_pdf?file={output_pdf}"
     })
 
 @request_handler.route('/fetch/registered_download_pdf', methods=['GET'])
