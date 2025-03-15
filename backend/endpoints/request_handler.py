@@ -122,7 +122,6 @@ def plot_helper(args, car_data = None):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-      
     try:
         return send_file(image_io, mimetype = 'image/png')
     except Exception as e:
