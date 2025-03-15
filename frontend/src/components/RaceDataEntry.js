@@ -2,11 +2,16 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuthContext } from '../context/AuthContext';
 
 function RaceDataEntry() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { year, track, driver } = state || {}; // Passed from CompareTelemetry
+  const { year, track, driver } = state || {};
+  
+  // Retrieve token from AuthContext and derive isAuthenticated flag
+  const { token } = useAuthContext();
+  const isAuthenticated = Boolean(token);
 
   const [formData, setFormData] = useState({
     lapTime: '',
@@ -14,6 +19,8 @@ function RaceDataEntry() {
     sector1: '',
     sector2: '',
     sector3: '',
+    frontWingAero: '',
+    rearWingAero: '',
   });
   const [theme, setTheme] = useState('default');
   const [loading, setLoading] = useState(false);
@@ -28,16 +35,20 @@ function RaceDataEntry() {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post('http://localhost:3001/api/report_gen/comparative-analysis', {
-        year,
-        track,
-        driver,
-        user_data: formData,
-      }, {
-        params: { theme },
-        withCredentials: true,
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
+      const response = await axios.post(
+        'http://localhost:3001/api/report_gen/comparative-analysis',
+        {
+          year,
+          track,
+          driver,
+          user_data: formData,
+        },
+        {
+          params: { theme },
+          withCredentials: true,
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       navigate('/analysis', { state: { analysis: response.data.result } });
     } catch (err) {
       setError('Failed to generate analysis. Please check your input and try again.');
@@ -46,6 +57,8 @@ function RaceDataEntry() {
       setLoading(false);
     }
   };
+
+  console.log("User authenticated:", isAuthenticated);
 
   return (
     <div className="race-data-entry-container">
@@ -107,7 +120,36 @@ function RaceDataEntry() {
             required
           />
         </div>
-       
+        {isAuthenticated && (
+          <>
+            <div className="mb-3">
+              <label className="form-label">Front Wing Aero (0 to 50):</label>
+              <input
+                type="number"
+                name="frontWingAero"
+                value={formData.frontWingAero}
+                onChange={handleChange}
+                className="form-control"
+                min="0"
+                max="50"
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Rear Wing Aero (0 to 50):</label>
+              <input
+                type="number"
+                name="rearWingAero"
+                value={formData.rearWingAero}
+                onChange={handleChange}
+                className="form-control"
+                min="0"
+                max="50"
+                required
+              />
+            </div>
+          </>
+        )}
         <div className="mb-3">
           <label className="form-label">Select Plot Theme:</label>
           <select
@@ -118,8 +160,7 @@ function RaceDataEntry() {
           >
             <option value="default">Default</option>
             <option value="cyberpunk">Cyberpunk</option>
-            
-            <option value="barbie">Barbiee</option>
+            <option value="barbie">Barbie</option>
           </select>
         </div>
         {loading && <p>Loading...</p>}
