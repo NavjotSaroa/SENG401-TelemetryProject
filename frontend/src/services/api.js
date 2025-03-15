@@ -60,3 +60,28 @@ export const loginUser = async (username, password) => {
     throw error;
   }
 };
+
+
+export const fetchAnalysisAndPdfUnregistered = async () => {
+  try {
+    const response = await axios.get(`${TELEMETRY_BASE}/fetch/unregistered_LLM_and_pdf`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching unregistered analysis and PDF:', error);
+    throw error;
+  }
+};
+
+export const fetchAnalysisAndPdfRegistered = async (userData) => {
+  try {
+    const response = await axios.get(`${TELEMETRY_BASE}/fetch/registered_LLM_and_pdf`, {
+      params: {
+        user_data: JSON.stringify(userData),
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching registered analysis and PDF:', error);
+    throw error;
+  }
+};
