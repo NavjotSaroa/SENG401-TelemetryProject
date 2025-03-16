@@ -14,11 +14,11 @@ function RaceDataEntry() {
   const isAuthenticated = Boolean(token);
 
   const [formData, setFormData] = useState({
-    lapTime: '',
-    topSpeed: '',
-    sector1: '',
-    sector2: '',
-    sector3: '',
+    onThrottleDiff: '',
+    frontCamber: '',
+    rearCamber: '',
+    frontSuspension: '',
+    rearSuspension: '',
     frontWingAero: '',
     rearWingAero: '',
   });
@@ -66,57 +66,67 @@ function RaceDataEntry() {
       <p>Comparing with {driver}</p>
       <form className="auth-form" onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label className="form-label">Lap Time (e.g., 1:23.456):</label>
+          <label className="form-label">On Throttle Differential Percentage (50 to 100):</label>
           <input
             type="text"
-            name="lapTime"
-            value={formData.lapTime}
+            name="onThrottleDiff"
+            value={formData.onThrottleDiff}
             onChange={handleChange}
             className="form-control"
+            min="50"
+            max="100"
             required
           />
         </div>
         <div className="mb-3">
-          <label className="form-label">Top Speed (km/h):</label>
+          <label className="form-label">Front Camber (-3.50 to -2.50):</label>
           <input
             type="number"
-            name="topSpeed"
-            value={formData.topSpeed}
+            name="frontCamber"
+            value={formData.frontCamber}
             onChange={handleChange}
             className="form-control"
+            min="-3.50"
+            max="-2.50"
             required
           />
         </div>
         <div className="mb-3">
-          <label className="form-label">Sector 1 Time (e.g., 0:28.123):</label>
+          <label className="form-label">Rear Camber (-2.00 to -1.00):</label>
           <input
             type="text"
-            name="sector1"
-            value={formData.sector1}
+            name="rearCamber"
+            value={formData.rearCamber}
             onChange={handleChange}
             className="form-control"
+            min="-2.00"
+            max="-1.00"
             required
           />
         </div>
         <div className="mb-3">
-          <label className="form-label">Sector 2 Time (e.g., 0:27.890):</label>
+          <label className="form-label">Front Suspension (1 to 41):</label>
           <input
             type="text"
-            name="sector2"
-            value={formData.sector2}
+            name="frontSuspension"
+            value={formData.frontSuspension}
             onChange={handleChange}
             className="form-control"
+            min="1"
+            max="41"
             required
           />
         </div>
         <div className="mb-3">
-          <label className="form-label">Sector 3 Time (e.g., 0:27.543):</label>
+          <label className="form-label">Rear Suspension (1 to 41):</label>
           <input
             type="text"
-            name="sector3"
-            value={formData.sector3}
+            name="rearSuspension"
+            value={formData.rearSuspension}
             onChange={handleChange}
             className="form-control"
+            min="1"
+            max="41"
             required
           />
         </div>
