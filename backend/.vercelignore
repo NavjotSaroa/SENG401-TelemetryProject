@@ -1,0 +1,27 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment (common names)
+venv/
+env/
+.virtualenv/
+
+# Logs & system files
+logs/
+cache/
+*.log
+.DS_Store
+.vscode/
+.idea/
+
+# Node.js leftovers (in case they exist)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Other unnecessary files
+*.sqlite3
+*.db
