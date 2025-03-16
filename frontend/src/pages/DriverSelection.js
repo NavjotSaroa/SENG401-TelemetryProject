@@ -34,6 +34,7 @@ const DriverSelection = () => {
 
   const handleCompare = () => {
     if (selectedDriver) {
+      localStorage.setItem('selectedDriver', selectedDriver);
       navigate(`/compare/${year}/${track}/${selectedDriver}`);
     }
   };

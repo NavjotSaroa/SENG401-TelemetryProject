@@ -107,7 +107,9 @@ def plot_helper(args, car_data = None):
         driver = args.get('driver')
         theme = args.get('theme')
         telemetry = FF1_Interact.request_telemetry(season, track, driver)
+        print("car_data", car_data)
 
+        # doing car_data.empty makes analysis work but not compare
         if not car_data:    # This would mean this is a pro driver plot, otherwise, the car_data would be provided by the user
             car_data = telemetry[0]
         

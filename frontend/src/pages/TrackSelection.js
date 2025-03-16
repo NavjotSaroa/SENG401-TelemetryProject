@@ -42,10 +42,12 @@ const TrackSelection = () => {
     setSelectedSeason(season);
     setSelectedTrack(null);
     setTracks([]);
+    localStorage.setItem('selectedYear', season);
   };
 
   const handleTrackSelect = (trackName) => {
     setSelectedTrack(trackName);
+    localStorage.setItem('selectedTrack', trackName);
   };
 
   const handleContinue = () => {

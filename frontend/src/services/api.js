@@ -85,3 +85,27 @@ export const fetchAnalysisAndPdfRegistered = async (userData) => {
     throw error;
   }
 };
+
+export const fetchUserPlot = async (fileData, token) => {
+  const year = localStorage.getItem('selectedYear');
+  const theme = localStorage.getItem('selectedTheme');
+  const driver = localStorage.getItem('selectedDriver');
+  const track = localStorage.getItem('selectedTrack');
+  const userDataStr = JSON.stringify(fileData);
+
+  const url = `${TELEMETRY_BASE}/fetch/registered_telemetry?user_data=${userDataStr}&year=${year}&track=${track}&driver=${driver}&theme=${theme}`;
+
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      responseType: 'blob',
+    });
+
+    return response;
+  } catch (err) {
+    console.error('Error in fetchUserPlot:', err);
+    throw err;
+  }
+};

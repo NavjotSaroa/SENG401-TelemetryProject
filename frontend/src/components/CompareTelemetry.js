@@ -33,6 +33,7 @@ const CompareTelemetry = () => {
 
   // Proceed to data entry page, passing state (year, track, driver)
   const proceedToDataEntry = () => {
+    localStorage.setItem('selectedTheme', theme);
     navigate('/enter-data', { state: { year, track, driver, plotUrl } });
   };
 

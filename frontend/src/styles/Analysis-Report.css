@@ -11,3 +11,26 @@
 .error {
     color: white;
 }
+
+.text-white {
+    color: white;
+  }
+  
+  .filename {
+    font-weight: bold;
+    color: white;
+  }
+  
+  .file-status {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: normal;
+  }
+
+  .plot-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 20px;
+  }
+  

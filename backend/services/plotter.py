@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use("Agg") # For macos setups
 from matplotlib import pyplot as plt
 from services.styling import StyleManager
 
