@@ -147,21 +147,10 @@ def fetch_pro_pdf():
     circuit_info = telemetry[1]
     summary_text = single_driver_analysis(driver, data, circuit_info)
 
-    # output_pdf = f"{driver}_telemetry_report.pdf"
-    # pdf_maker = UnregisteredUserPDFMaker(output_pdf)
-    # pdf_maker.generate_pdf(driver, summary_text)
-
     return jsonify({
         "driver": driver,
         "summary_text": summary_text,
-        # "pdf_url": f"/fetch/download_pdf?file={output_pdf}"
     })
-
-# @request_handler.route('/fetch/unregistered_download_pdf', methods=['GET'])
-# def unregistered_download_pdf():
-#     file_path = request.args.get("file")
-#     return send_file(file_path, as_attachment=True) if file_path else abort(403)
-
 
 @request_handler.route('/fetch/registered_telemetry', methods = ['GET'])
 @jwt_required
@@ -194,18 +183,7 @@ def fetch_user_pdf():
 
     summary_text = comparative_analysis(driver, user_data, pro_data, circuit_info)
 
-    # output_pdf = f"{driver}_telemetry_report.pdf"
-    # pdf_maker = RegisteredUserPDFMaker(output_pdf)
-    # pdf_maker.generate_pdf(driver, summary_text)
-
     return jsonify({
         "driver": driver,
         "summary_text": summary_text,
-        # "pdf_url": f"/fetch/download_pdf?file={output_pdf}"
     })
-
-# @request_handler.route('/fetch/registered_download_pdf', methods=['GET'])
-# @jwt_required
-# def registered_download_pdf():
-#     file_path = request.args.get("file")
-#     return send_file(file_path, as_attachment=True) if file_path else abort(403)
