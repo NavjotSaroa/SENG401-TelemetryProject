@@ -1,7 +1,6 @@
 from flask import Blueprint, request, send_file, abort, jsonify
 from services.ff1_interact import FF1_Interact
 from middleware.auth import jwt_required
-from services.gpt_service import *
 from services.plotter import Plotter
 from matplotlib import pyplot as plt
 import base64
@@ -78,13 +77,21 @@ def fetch_drivers():
         if season < 2019 or season > 2024:  # Data is only available between 2019 and 2024
             raise ValueError("Invalid season. Year must be between 2019 and 2024.")
 
-
         # Request driver list from Fast F1 library through FF1_Interact
         driver_list = FF1_Interact.request_drivers(season, track)
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
     return driver_list
+
+def extract_args(args):
+    season = int(args.get('year'))
+    track = args.get('track')
+    driver = args.get('driver')
+    theme = args.get('theme')
+    telemetry = FF1_Interact.request_telemetry(season, track, driver)
+
+    return (season, track, driver, theme, telemetry)
 
 def plot_helper(args, car_data = None):
     """
@@ -102,13 +109,8 @@ def plot_helper(args, car_data = None):
     """
     try:
         # Extract args from query
-        season = int(args.get('year'))
-        track = args.get('track')
-        driver = args.get('driver')
-        theme = args.get('theme')
-        telemetry = FF1_Interact.request_telemetry(season, track, driver)
+        _, _, _, theme, telemetry = extract_args(args)
 
-        # doing car_data.empty makes analysis work but not compare
         if car_data is None:    # This would mean this is a pro driver plot, otherwise, the car_data would be provided by the user
             car_data = telemetry[0]
         
@@ -124,20 +126,12 @@ def plot_helper(args, car_data = None):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+
     try:
         return send_file(image_io, mimetype = 'image/png')
     except Exception as e:
         return jsonify({"error": str(e)}), 403
 
-
-def extract_args(args):
-    season = int(args.get('year'))
-    track = args.get('track')
-    driver = args.get('driver')
-    theme = args.get('theme')
-    telemetry = FF1_Interact.request_telemetry(season, track, driver)
-
-    return (season, track, driver, theme, telemetry)
 
 
 @request_handler.route('/fetch/telemetry', methods = ['GET'])
@@ -153,29 +147,27 @@ def fetch_pro_pdf():
     circuit_info = telemetry[1]
     summary_text = single_driver_analysis(driver, data, circuit_info)
 
-    output_pdf = f"{driver}_telemetry_report.pdf"
-    pdf_maker = UnregisteredUserPDFMaker(output_pdf)
-    pdf_maker.generate_pdf(driver, summary_text)
+    # output_pdf = f"{driver}_telemetry_report.pdf"
+    # pdf_maker = UnregisteredUserPDFMaker(output_pdf)
+    # pdf_maker.generate_pdf(driver, summary_text)
 
     return jsonify({
         "driver": driver,
         "summary_text": summary_text,
-        "pdf_url": f"/fetch/download_pdf?file={output_pdf}"
+        # "pdf_url": f"/fetch/download_pdf?file={output_pdf}"
     })
 
-@request_handler.route('/fetch/unregistered_download_pdf', methods=['GET'])
-def unregistered_download_pdf():
-    file_path = request.args.get("file")
-    return send_file(file_path, as_attachment=True) if file_path else abort(403)
+# @request_handler.route('/fetch/unregistered_download_pdf', methods=['GET'])
+# def unregistered_download_pdf():
+#     file_path = request.args.get("file")
+#     return send_file(file_path, as_attachment=True) if file_path else abort(403)
 
 
 @request_handler.route('/fetch/registered_telemetry', methods = ['GET'])
 @jwt_required
 def fetch_user_plot():
     json_file_as_string = request.args.get("user_data")
-    print("This is working")
     json_file = json.loads(json_file_as_string) if json_file_as_string else abort(403)
-    print("this is still working")
 
     user_data = pd.DataFrame.from_dict(json_file)
     user_data = user_data.astype(float)
@@ -202,13 +194,18 @@ def fetch_user_pdf():
 
     summary_text = comparative_analysis(driver, user_data, pro_data, circuit_info)
 
+    # output_pdf = f"{driver}_telemetry_report.pdf"
+    # pdf_maker = RegisteredUserPDFMaker(output_pdf)
+    # pdf_maker.generate_pdf(driver, summary_text)
+
     return jsonify({
         "driver": driver,
         "summary_text": summary_text,
+        # "pdf_url": f"/fetch/download_pdf?file={output_pdf}"
     })
 
-@request_handler.route('/fetch/registered_download_pdf', methods=['GET'])
-@jwt_required
-def registered_download_pdf():
-    file_path = request.args.get("file")
-    return send_file(file_path, as_attachment=True) if file_path else abort(403)
+# @request_handler.route('/fetch/registered_download_pdf', methods=['GET'])
+# @jwt_required
+# def registered_download_pdf():
+#     file_path = request.args.get("file")
+#     return send_file(file_path, as_attachment=True) if file_path else abort(403)
