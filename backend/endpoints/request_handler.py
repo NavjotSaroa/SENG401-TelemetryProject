@@ -107,10 +107,9 @@ def plot_helper(args, car_data = None):
         driver = args.get('driver')
         theme = args.get('theme')
         telemetry = FF1_Interact.request_telemetry(season, track, driver)
-        print("car_data", car_data)
 
         # doing car_data.empty makes analysis work but not compare
-        if not car_data:    # This would mean this is a pro driver plot, otherwise, the car_data would be provided by the user
+        if car_data is None:    # This would mean this is a pro driver plot, otherwise, the car_data would be provided by the user
             car_data = telemetry[0]
         
         circuit_info = telemetry[1]
@@ -174,7 +173,9 @@ def unregistered_download_pdf():
 @jwt_required
 def fetch_user_plot():
     json_file_as_string = request.args.get("user_data")
+    print("This is working")
     json_file = json.loads(json_file_as_string) if json_file_as_string else abort(403)
+    print("this is still working")
 
     user_data = pd.DataFrame.from_dict(json_file)
     user_data = user_data.astype(float)

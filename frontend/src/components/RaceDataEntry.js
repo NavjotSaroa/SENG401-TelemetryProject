@@ -88,6 +88,7 @@ function RaceDataEntry() {
             className="form-control"
             min="-3.50"
             max="-2.50"
+            step="0.01"
             required
           />
         </div>
