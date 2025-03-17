@@ -23,11 +23,12 @@ const Navigation = () => {
               <li className="nav-item">
                 <NavLink className="nav-link" to="/dashboard">Dashboard</NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/about-us">About Us</NavLink>
-              </li>
             </>
           )}
+
+          <li className="nav-item">
+            <NavLink className="nav-link" to="/about-us">About Us</NavLink>
+          </li>
         </ul>
 
         <div className="d-flex">
