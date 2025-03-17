@@ -149,7 +149,7 @@ def fetch_pro_pdf():
 
     return jsonify({
         "driver": driver,
-        "summary_text": summary_text,
+        "summary_text": summary_text
     })
 
 @request_handler.route('/fetch/registered_telemetry', methods = ['GET'])
