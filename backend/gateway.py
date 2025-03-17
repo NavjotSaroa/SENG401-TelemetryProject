@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 CORS(app, origins="http://localhost:3000", supports_credentials=True)
 
-# CORS(app)
+CORS(app)
 
 # Registering API endpoints
 app.register_blueprint(request_handler, url_prefix='/api/telemetry')
@@ -18,4 +18,4 @@ app.register_blueprint(report_gen_api, url_prefix='/api/report_gen')
 app.register_blueprint(auth_api, url_prefix='/api/auth')
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='localhost')
