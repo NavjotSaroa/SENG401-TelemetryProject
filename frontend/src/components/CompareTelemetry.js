@@ -23,6 +23,7 @@ const CompareTelemetry = () => {
     try {
       const url = await fetchTelemetryPlot(year, track, driver, theme);
       localStorage.setItem('selectedTheme', theme);
+      localStorage.setItem('plotUrl', url); 
       setPlotUrl(url);
     } catch (err) {
       console.error('Error fetching telemetry plot:', err);

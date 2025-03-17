@@ -34,3 +34,12 @@
     margin-top: 20px;
   }
   
+  .llm-response {
+    color: #fff;
+  }
+  
+  .llm-response-content h3 {
+    margin-bottom: 10px;
+    color: #fff;
+    font-size: 1.5em;
+  }

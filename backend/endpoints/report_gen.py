@@ -32,12 +32,20 @@ def single_gpt():
 @jwt_required
 def comparative_gpt():
     try:
-        track = request.args.get("track")
-        user_data = request.args.get("user_data")
-        pro_data = request.args.get("pro_data")
+        track = request.json.get("track")
+        user_data = request.json.get("user_data")
+        pro_data = request.json.get("pro_data")
+        circuit_info = request.json.get("circuit_info")
+        setup_data = request.json.get("setup_data")
+
+        print("track", track)
+        print("uesr data", user_data)
+        print("pro data", pro_data)
+        print("circuit info", circuit_info)
+        print("setup data", setup_data)
 
         # Check if the result returned an error
-        result = comparative_analysis(track, user_data, pro_data)
+        result = comparative_analysis(track, user_data, pro_data, circuit_info, setup_data)
         if isinstance(result, Exception):
             return jsonify({"error": str(result)}), 500
 

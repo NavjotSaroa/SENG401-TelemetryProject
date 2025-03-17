@@ -1,15 +1,12 @@
-// src/components/RaceDataEntry.js
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useAuthContext } from '../context/AuthContext';
 
 function RaceDataEntry() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const { year, track, driver } = state || {};
-  
-  // Retrieve token from AuthContext and derive isAuthenticated flag
+
   const { token } = useAuthContext();
   const isAuthenticated = Boolean(token);
 
@@ -34,31 +31,24 @@ function RaceDataEntry() {
     e.preventDefault();
     setLoading(true);
     setError(null);
+  
     try {
-      const response = await axios.post(
-        'http://localhost:3001/api/report_gen/comparative-analysis',
-        {
-          year,
-          track,
-          driver,
-          user_data: formData,
+      navigate('/analysis/report-id', {
+        state: {
+          formData, 
+          year, 
+          track, 
+          driver, 
+          theme,
         },
-        {
-          params: { theme },
-          withCredentials: true,
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      navigate('/analysis/:reportId', { state: { analysis: response.data.result } });
+      });
     } catch (err) {
-      setError('Failed to generate analysis. Please check your input and try again.');
+      setError('Failed to proceed to the next page. Please check your input and try again.');
       console.error('Error submitting data:', err);
     } finally {
       setLoading(false);
     }
   };
-
-  console.log("User authenticated:", isAuthenticated);
 
   return (
     <div className="race-data-entry-container">

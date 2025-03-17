@@ -111,7 +111,8 @@ def plot_helper(args, car_data = None):
         # Extract args from query
         _, _, _, theme, telemetry = extract_args(args)
 
-        if car_data is None:    # This would mean this is a pro driver plot, otherwise, the car_data would be provided by the user
+        # Might have to change to .empty
+        if car_data is None or car_data.empty:    # This would mean this is a pro driver plot, otherwise, the car_data would be provided by the user
             car_data = telemetry[0]
         
         circuit_info = telemetry[1]

@@ -11,6 +11,8 @@ import TrackSelection from './pages/TrackSelection';
 import RaceDataEntry from './components/RaceDataEntry';
 import DriverSelection from './pages/DriverSelection';  
 import ViewRecentAnalysis from './pages/ViewRecentAnalysis';
+import AboutUs from './pages/AboutUs';
+
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 
@@ -47,6 +49,7 @@ function RoutesContent() {
       <Route path="/enter-data" element={<RaceDataEntry />} />
 
       <Route path="/view-recent" element={<ViewRecentAnalysis />} />
+      <Route path="/about-us" element={<AboutUs />} />
       
       {/* Driver Selection Route (Fullscreen Background) */}
       <Route path="/drivers/:year/:track" element={<DriverSelection />} />

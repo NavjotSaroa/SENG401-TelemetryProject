@@ -11,7 +11,8 @@ const API = axios.create({
 });
 // Base URLs for different API groups
 const TELEMETRY_BASE = 'http://localhost:3001/api/telemetry';
-const AUTH_BASE = 'http://localhost:3001/api/auth';           
+const AUTH_BASE = 'http://localhost:3001/api/auth';
+const REPORT_GEN_BASE = 'http://localhost:3001/api/report_gen';        
 
 API.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
@@ -106,6 +107,31 @@ export const fetchUserPlot = async (fileData, token) => {
     return response;
   } catch (err) {
     console.error('Error in fetchUserPlot:', err);
+    throw err;
+  }
+};
+
+export const submitComparativeAnalysis = async (year, track, driver, formData, theme, token, fileData) => {
+  try {
+    console.log("formData Test api", formData);
+    const response = await axios.post(
+      `${REPORT_GEN_BASE}/comparative-analysis`,
+      {
+        year,
+        track,
+        driver,
+        user_data: fileData,
+        setup_data: formData,
+      },
+      {
+        params: { theme },
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response.data;
+  } catch (err) {
+    console.error('Error submitting comparative analysis:', err);
     throw err;
   }
 };
