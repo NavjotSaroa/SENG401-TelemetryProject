@@ -49,7 +49,7 @@ function RaceDataEntry() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      navigate('/analysis', { state: { analysis: response.data.result } });
+      navigate('/analysis/:reportId', { state: { analysis: response.data.result } });
     } catch (err) {
       setError('Failed to generate analysis. Please check your input and try again.');
       console.error('Error submitting data:', err);

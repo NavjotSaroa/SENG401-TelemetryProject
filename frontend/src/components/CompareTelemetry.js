@@ -22,6 +22,7 @@ const CompareTelemetry = () => {
     setLoading(true);
     try {
       const url = await fetchTelemetryPlot(year, track, driver, theme);
+      localStorage.setItem('selectedTheme', theme);
       setPlotUrl(url);
     } catch (err) {
       console.error('Error fetching telemetry plot:', err);
@@ -33,7 +34,6 @@ const CompareTelemetry = () => {
 
   // Proceed to data entry page, passing state (year, track, driver)
   const proceedToDataEntry = () => {
-    localStorage.setItem('selectedTheme', theme);
     navigate('/enter-data', { state: { year, track, driver, plotUrl } });
   };
 

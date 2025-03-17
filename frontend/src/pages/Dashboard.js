@@ -11,7 +11,7 @@ const Dashboard = () => {
         <Link to="/select-track" className="btn btn-primary me-3">
           New Comparison
         </Link>
-        <Link to="/analysis/recent" className="btn btn-outline-light">
+        <Link to="/view-recent" className="btn btn-outline-light">
           View Recent Analysis
         </Link>
       </div>
