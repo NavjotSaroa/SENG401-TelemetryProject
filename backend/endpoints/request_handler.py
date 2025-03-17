@@ -164,7 +164,18 @@ def fetch_user_plot():
 
     return plot_helper(request.args, user_data)
 
+def extract_setup_args(args):
+        setup_data = {
+            "frontCamber": args.get("frontCamber"),
+            "frontSuspension": args.get("frontSuspension"),
+            "frontWingAero": request.args.get("frontWingAero"),
+            "onThrottleDiff": args.get("onThrottleDiff"),
+            "rearCamber": args.get("rearCamber"),
+            "rearSuspension": args.get("rearSuspension"),
+            "rearWingAero": args.get("rearWingAero")
+        }
 
+        return setup_data
 
 @request_handler.route('/fetch/registered_LLM_and_pdf', methods=['GET'])
 @jwt_required
@@ -174,6 +185,8 @@ def fetch_user_pdf():
     pro_data = telemetry[0]
     circuit_info = telemetry[1]
 
+    setup_data = extract_setup_args(request.args)
+
     json_file_as_string = request.args.get("user_data")
     json_file = json.loads(json_file_as_string) if json_file_as_string else abort(403)
 
@@ -181,7 +194,7 @@ def fetch_user_pdf():
     user_data = user_data.astype(float)
     user_data.index = user_data.index.astype(int)
 
-    summary_text = comparative_analysis(driver, user_data, pro_data, circuit_info)
+    summary_text = comparative_analysis(driver, user_data, pro_data, circuit_info, setup_data)
 
     return jsonify({
         "driver": driver,

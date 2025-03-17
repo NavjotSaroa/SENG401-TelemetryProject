@@ -43,7 +43,7 @@ def single_driver_analysis(track, data, circuit_info):
         return e
 
 
-def comparative_analysis(track, user_data, pro_data, circuit_info):
+def comparative_analysis(track, user_data, pro_data, circuit_info, setup_data):
     try:
         client = OpenAI(api_key=os.getenv("OPENAI_KEY"))
 
@@ -59,6 +59,7 @@ def comparative_analysis(track, user_data, pro_data, circuit_info):
         prompt = f"Here is the telemetry data of a professional F1 driver: {pro_data}.\
             Here is the telemetry data of my driving: {user_data}. I am an average driver.\
             Here is information of where each corner on a circuit is in terms of distance from the start line: {circuit_info}\
+            Here is information on how the car is set up: {setup_data}\
             You are an F1 race engineer.\
             The data I have given you is from laps done around the {track} F1 track. \
             This data is of speed, throttle usage, brake usage, gear usage, and distance from the start line. \
@@ -67,6 +68,7 @@ def comparative_analysis(track, user_data, pro_data, circuit_info):
             I want you to compare the two sets of data, and tell me what I have done wrong in comparison to the F1 driver. \
             For example, whether I braked too early, whether my throttle usage is too sharp, etc. \
             Mention the corners where these errors have been made and give advice on how I can improve upon that.\
+            Also, try and use the setup data that has been given to you. Talk about how that also affects my lap time.\
             Do not just give me an index number from the JSON data you see instead of corners!!"
 
         completion = client.chat.completions.create(
