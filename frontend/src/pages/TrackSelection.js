@@ -5,6 +5,7 @@ import axios from 'axios';
 import SeasonSelector from '../components/SeasonSelector';
 import Loader from '../components/Loader';
 import '../App.css';
+import API from '../services/api';
 
 const TrackSelection = () => {
   const [selectedSeason, setSelectedSeason] = useState('');
@@ -20,7 +21,7 @@ const TrackSelection = () => {
         try {
           setIsLoading(true);
           setError('');
-          const response = await axios.get('/api/telemetry/fetch/tracklist', {
+          const response = await API.get('/telemetry/fetch/tracklist', {
             params: { year: selectedSeason }
           });
           
