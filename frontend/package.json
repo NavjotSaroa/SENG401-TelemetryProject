@@ -2,7 +2,7 @@
   "name": "f1-telemetry",
   "version": "1.0.0",
   "private": true,
-  "proxy": "https://seng401-telemetryproject-d3hw.onrender.com",
+  "proxy": "https://seng401-telemetryproject-1.onrender.com",
   "dependencies": {
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",

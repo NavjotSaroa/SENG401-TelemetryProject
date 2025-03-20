@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://seng401-telemetryproject-d3hw.onrender.com/api',
+  baseURL: 'https://seng401-telemetryproject-1.onrender.com/api',
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
@@ -10,9 +10,9 @@ const API = axios.create({
   }
 });
 // Base URLs for different API groups
-const TELEMETRY_BASE = 'https://seng401-telemetryproject-d3hw.onrender.com/api/telemetry';
-const AUTH_BASE = 'https://seng401-telemetryproject-d3hw.onrender.com/api/auth';
-const REPORT_GEN_BASE = 'https://seng401-telemetryproject-d3hw.onrender.com/api/report_gen';        
+const TELEMETRY_BASE = 'https://seng401-telemetryproject-1.onrender.com/api/telemetry';
+const AUTH_BASE = 'https://seng401-telemetryproject-1.onrender.com/api/auth';
+const REPORT_GEN_BASE = 'https://seng401-telemetryproject-1.onrender.com/api/report_gen';        
 
 API.interceptors.request.use(config => {
   const token = localStorage.getItem('token');

@@ -20,7 +20,7 @@ function Login() {
     }
 
     try {
-      const response = await fetch('https://seng401-telemetryproject-d3hw.onrender.com/api/auth/login', {
+      const response = await fetch('https://seng401-telemetryproject-1.onrender.com/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
