@@ -10,8 +10,6 @@ app = Flask(__name__)
 
 CORS(app, origins="http://localhost:3000", supports_credentials=True)
 
-CORS(app)
-
 # Registering API endpoints
 app.register_blueprint(request_handler, url_prefix='/api/telemetry')
 app.register_blueprint(data_analysis_api, url_prefix='/api/data_analysis')
@@ -21,4 +19,4 @@ app.register_blueprint(auth_api, url_prefix='/api/auth')
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))   # 10000 is default for render
-    app.run(host='0.0.0.0', port = port)
+    app.run(host='0.0.0.0', port = 3001)
