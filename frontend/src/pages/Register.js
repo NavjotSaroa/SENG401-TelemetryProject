@@ -32,7 +32,7 @@ const Register = () => {
     };
 
     try {
-      const registrationResponse = await fetch('http://localhost:3001/api/auth/register', {
+      const registrationResponse = await fetch('https://seng401-telemetryproject-d3hw.onrender.com/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ const Register = () => {
 
       const registrationData = await registrationResponse.json();
 
-      await fetch(`http://localhost:3001/user/${registrationData.user}/update-details`, {
+      await fetch(`https://seng401-telemetryproject-d3hw.onrender.com/user/${registrationData.user}/update-details`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(registrationData),
