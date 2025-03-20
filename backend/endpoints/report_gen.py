@@ -14,9 +14,10 @@ def single_gpt():
     try:
         track = request.args.get("track")
         data = request.args.get("data")
+        circuit_info = request.json.get("circuit_info")
 
         # Check if the result returned an error
-        result = single_driver_analysis(track, data)
+        result = single_driver_analysis(track, data, circuit_info)
         if isinstance(result, Exception):
             return jsonify({"error": str(result)}), 500
 
@@ -39,7 +40,7 @@ def comparative_gpt():
         setup_data = request.json.get("setup_data")
 
         print("track", track)
-        print("uesr data", user_data)
+        print("user data", user_data)
         print("pro data", pro_data)
         print("circuit info", circuit_info)
         print("setup data", setup_data)

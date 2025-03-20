@@ -3,6 +3,7 @@ from services.ff1_interact import FF1_Interact
 from middleware.auth import jwt_required
 from services.plotter import Plotter
 from matplotlib import pyplot as plt
+from services.gpt_service import *
 import base64
 import pandas as pd
 import json
