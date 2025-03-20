@@ -1,4 +1,7 @@
 from flask import Blueprint, request, jsonify
+import pandas as pd
+import json
+from services.ff1_interact import FF1_Interact
 from middleware.auth import jwt_required
 from dotenv import load_dotenv
 from services.gpt_service import single_driver_analysis, comparative_analysis
@@ -12,9 +15,8 @@ load_dotenv()
 @jwt_required
 def single_gpt():
     try:
-        track = request.args.get("track")
-        data = request.args.get("data")
-        circuit_info = request.json.get("circuit_info")
+        season, track, driver, _, telemetry = extract_args(request.args)
+        data, circuit_info = telemetry
 
         # Check if the result returned an error
         result = single_driver_analysis(track, data, circuit_info)
@@ -33,20 +35,20 @@ def single_gpt():
 @jwt_required
 def comparative_gpt():
     try:
-        track = request.json.get("track")
-        user_data = request.json.get("user_data")
-        pro_data = request.json.get("pro_data")
-        circuit_info = request.json.get("circuit_info")
-        setup_data = request.json.get("setup_data")
+        _, _, driver, _, telemetry = extract_args(request.args)
+        pro_data = telemetry[0]
+        circuit_info = telemetry[1]
 
-        print("track", track)
-        print("user data", user_data)
-        print("pro data", pro_data)
-        print("circuit info", circuit_info)
-        print("setup data", setup_data)
+        setup_data = extract_setup_args(request.args)
 
-        # Check if the result returned an error
-        result = comparative_analysis(track, user_data, pro_data, circuit_info, setup_data)
+        json_file_as_string = request.args.get("user_data")
+        json_file = json.loads(json_file_as_string) if json_file_as_string else abort(403)
+
+        user_data = pd.DataFrame.from_dict(json_file)
+        user_data = user_data.astype(float)
+        user_data.index = user_data.index.astype(int)
+
+        result = comparative_analysis(driver, user_data, pro_data, circuit_info, setup_data)
         if isinstance(result, Exception):
             return jsonify({"error": str(result)}), 500
 
@@ -54,3 +56,26 @@ def comparative_gpt():
 
     except Exception as e:
         return jsonify({"error": e}), 400
+
+
+def extract_args(args):
+    season = int(args.get('year'))
+    track = args.get('track')
+    driver = args.get('driver')
+    theme = args.get('theme')
+    telemetry = FF1_Interact.request_telemetry(season, track, driver)
+
+    return (season, track, driver, theme, telemetry)
+
+def extract_setup_args(args):
+        setup_data = {
+            "frontCamber": args.get("frontCamber"),
+            "frontSuspension": args.get("frontSuspension"),
+            "frontWingAero": request.args.get("frontWingAero"),
+            "onThrottleDiff": args.get("onThrottleDiff"),
+            "rearCamber": args.get("rearCamber"),
+            "rearSuspension": args.get("rearSuspension"),
+            "rearWingAero": args.get("rearWingAero")
+        }
+
+        return setup_data
