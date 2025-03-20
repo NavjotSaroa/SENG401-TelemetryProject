@@ -6,6 +6,7 @@ import SeasonSelector from '../components/SeasonSelector';
 import Loader from '../components/Loader';
 import '../App.css';
 import API from '../services/api';
+console.log("API import:", API);
 
 const TrackSelection = () => {
   const [selectedSeason, setSelectedSeason] = useState('');
