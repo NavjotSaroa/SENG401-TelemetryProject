@@ -19,4 +19,4 @@ app.register_blueprint(auth_api, url_prefix='/api/auth')
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))   # 10000 is default for render
-    app.run(host='0.0.0.0', port = 3001)
+    app.run(host='0.0.0.0', port = port)
