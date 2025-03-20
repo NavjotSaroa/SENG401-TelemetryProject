@@ -18,14 +18,15 @@ import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'r
 
 function AppRoutes() {
   const location = useLocation();
-  const isDriverSelection = location.pathname.startsWith('/drivers/');
+  const isFullScreenPage = 
+    location.pathname.startsWith('/drivers/') || 
+    location.pathname === '/about-us';
 
   return (
     <>
       <AnimatedBackground />
       <Navigation />
-      {/* Only wrap in .container.mt-4 if it's NOT the Driver Selection page */}
-      {!isDriverSelection ? (
+      {!isFullScreenPage ? (
         <div className="container mt-4">
           <RoutesContent />
         </div>
