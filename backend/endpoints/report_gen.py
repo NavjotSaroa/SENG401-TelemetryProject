@@ -15,7 +15,7 @@ load_dotenv()
 @jwt_required
 def single_gpt():
     try:
-        season, track, driver, _, telemetry = extract_args(request.args)
+        season, track, driver, _, telemetry = extract_json(request.json)
         data, circuit_info = telemetry
 
         # Check if the result returned an error
@@ -35,11 +35,11 @@ def single_gpt():
 @jwt_required
 def comparative_gpt():
     try:
-        _, _, driver, _, telemetry = extract_args(request.args)
+        _, _, driver, _, telemetry = extract_json(request.json)
         pro_data = telemetry[0]
         circuit_info = telemetry[1]
 
-        setup_data = extract_setup_args(request.args)
+        setup_data = extract_setup_json(request.json)
 
         json_file_as_string = request.args.get("user_data")
         json_file = json.loads(json_file_as_string) if json_file_as_string else abort(403)
@@ -58,7 +58,7 @@ def comparative_gpt():
         return jsonify({"error": e}), 400
 
 
-def extract_args(args):
+def extract_json(args):
     season = int(args.get('year'))
     track = args.get('track')
     driver = args.get('driver')
@@ -67,7 +67,7 @@ def extract_args(args):
 
     return (season, track, driver, theme, telemetry)
 
-def extract_setup_args(args):
+def extract_setup_json(args):
         setup_data = {
             "frontCamber": args.get("frontCamber"),
             "frontSuspension": args.get("frontSuspension"),
