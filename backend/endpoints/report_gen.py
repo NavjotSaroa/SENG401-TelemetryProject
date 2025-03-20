@@ -12,11 +12,14 @@ report_gen_api = Blueprint("report_gen_api", __name__)
 load_dotenv()
 
 @report_gen_api.route('/single-analysis', methods=['POST'])
-@jwt_required
 def single_gpt():
     try:
         season, track, driver, _, telemetry = extract_json(request.json)
         data, circuit_info = telemetry
+
+        print("track", track)
+        print("data", data)
+        print("circuit info", circuit_info)
 
         # Check if the result returned an error
         result = single_driver_analysis(track, data, circuit_info)
@@ -35,20 +38,20 @@ def single_gpt():
 @jwt_required
 def comparative_gpt():
     try:
-        _, _, driver, _, telemetry = extract_json(request.json)
-        pro_data = telemetry[0]
-        circuit_info = telemetry[1]
-
+        season, track, driver, _, telemetry = extract_json(request.json)
         setup_data = extract_setup_json(request.json)
+        pro_data, circuit_info = telemetry
+        user_data = request.json.get("user_data")
+        setup_data = request.json.get("setup_data")
 
-        json_file_as_string = request.args.get("user_data")
-        json_file = json.loads(json_file_as_string) if json_file_as_string else abort(403)
+        print("track", track)
+        print("user data", user_data)
+        print("pro data", pro_data)
+        print("circuit info", circuit_info)
+        print("setup data", setup_data)
 
-        user_data = pd.DataFrame.from_dict(json_file)
-        user_data = user_data.astype(float)
-        user_data.index = user_data.index.astype(int)
-
-        result = comparative_analysis(driver, user_data, pro_data, circuit_info, setup_data)
+        # Check if the result returned an error
+        result = comparative_analysis(track, user_data, pro_data, circuit_info, setup_data)
         if isinstance(result, Exception):
             return jsonify({"error": str(result)}), 500
 

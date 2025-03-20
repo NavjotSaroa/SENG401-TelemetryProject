@@ -135,3 +135,25 @@ export const submitComparativeAnalysis = async (year, track, driver, formData, t
     throw err;
   }
 };
+
+export const submitSingleAnalysis = async (year, track, driver, theme) => {
+  try {
+    console.log("Track Test api", track);
+    const response = await axios.post(
+      `${REPORT_GEN_BASE}/single-analysis`,
+      {
+        year, 
+        driver, 
+        track, 
+      },
+      {
+        params: { theme },
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (err) {
+    console.error('Error submitting single analysis:', err);
+    throw err;
+  }
+};

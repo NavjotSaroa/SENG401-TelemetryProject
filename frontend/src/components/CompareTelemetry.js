@@ -34,8 +34,15 @@ const CompareTelemetry = () => {
   };
 
   // Proceed to data entry page, passing state (year, track, driver)
-  const proceedToDataEntry = () => {
-    navigate('/enter-data', { state: { year, track, driver, plotUrl } });
+  const proceedToNextPage = () => {
+    const token = sessionStorage.getItem('jwtToken');
+    if (token) {
+      navigate('/enter-data', { state: { year, track, driver } });
+    } 
+    else {
+      navigate('/analysisU/report-id', {
+        state: {plotUrl, year, track, driver, theme} });
+    }
   };
 
   return (
@@ -67,7 +74,7 @@ const CompareTelemetry = () => {
         <div className="mt-4">
           <TelemetryPlot plotUrl={plotUrl} />
           {/* Button to proceed to data entry page */}
-          <button onClick={proceedToDataEntry} className="btn btn-secondary mt-3">
+          <button onClick={proceedToNextPage} className="btn btn-secondary mt-3">
             Proceed to Data Entry
           </button>
         </div>

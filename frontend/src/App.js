@@ -6,11 +6,12 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import CompareTelemetry from './components/CompareTelemetry';
-import AnalysisReport from './pages/AnalysisReport';
+import AnalysisReportR from './pages/AnalysisReportR';
 import TrackSelection from './pages/TrackSelection';
 import RaceDataEntry from './components/RaceDataEntry';
 import DriverSelection from './pages/DriverSelection';  
 import ViewRecentAnalysis from './pages/ViewRecentAnalysis';
+import AnalysisReportU from './pages/AnalysisReportU';
 import AboutUs from './pages/AboutUs';
 
 import './App.css';
@@ -55,7 +56,8 @@ function RoutesContent() {
       {/* Driver Selection Route (Fullscreen Background) */}
       <Route path="/drivers/:year/:track" element={<DriverSelection />} />
       <Route path="/compare/:year/:track/:driver" element={<CompareTelemetry />} />
-      <Route path="/analysis/:reportId" element={<AnalysisReport />} />
+      <Route path="/analysisR/:reportId" element={<AnalysisReportR />} />
+      <Route path="/analysisU/:reportId" element={<AnalysisReportU />} />
 
       {/* Redirects */}
       <Route path="/get-started" element={<Navigate to="/select-track" />} />

@@ -33,7 +33,7 @@ function RaceDataEntry() {
     setError(null);
   
     try {
-      navigate('/analysis/report-id', {
+      navigate('/analysisR/report-id', {
         state: {
           formData, 
           year, 
