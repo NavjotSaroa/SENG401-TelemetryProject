@@ -14,7 +14,6 @@ backend/
 │   ├── login.py              # Checks credentials on DB, then generates and returns a JWT token
 │   ├── plotter.py            # Creates a plot given certain parameters. 
 │   ├── register.py           # Saves a user and hashed password in DB
-│   ├── report_service.py     # Creates a report for the user, given LLM and user data
 │   ├── styling.py            # Styles the plots according to style chosen by the user
 │
 ├── endpoints/
