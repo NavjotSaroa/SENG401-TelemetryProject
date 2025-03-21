@@ -71,11 +71,11 @@
   box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
 }
 
-/* Tooltip Positioning with fixed yellow text color */
 .data-tooltip2 {
-  position: fixed;
-  bottom: 350px;
-  left: 20px;
+  position: absolute;
+  top: 100%; 
+  left: 50%; 
+  transform: translateX(-50%); 
   width: 320px;
   background: rgba(10, 10, 10, 0.97);
   backdrop-filter: blur(5px);
@@ -86,7 +86,9 @@
   animation: tooltipFade 0.3s ease;
   z-index: 1000;
   color: #ffffff; 
+  margin-bottom: 8px; 
 }
+
 
 /* Keyframes for the pulsating effect */
 @keyframes icon-pulse {
