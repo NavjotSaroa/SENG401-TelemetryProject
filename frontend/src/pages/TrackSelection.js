@@ -1,7 +1,6 @@
 // src/pages/TrackSelection.js
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import SeasonSelector from '../components/SeasonSelector';
 import Loader from '../components/Loader';
 import '../App.css';

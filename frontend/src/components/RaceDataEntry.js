@@ -53,7 +53,7 @@ function RaceDataEntry() {
   return (
     <div className="race-data-entry-container">
       <h2>Enter Your Racing Data for {track} {year}</h2>
-      <p>Comparing with {driver}</p>
+      <p>Comparing with driver #{driver}</p>
       <form className="auth-form" onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">On Throttle Differential Percentage (50 to 100):</label>

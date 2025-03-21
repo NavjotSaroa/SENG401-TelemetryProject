@@ -75,7 +75,7 @@ const CompareTelemetry = () => {
           <TelemetryPlot plotUrl={plotUrl} />
           {/* Button to proceed to data entry page */}
           <button onClick={proceedToNextPage} className="btn btn-secondary mt-3">
-            Proceed to Data Entry
+            Proceed to Analysis
           </button>
         </div>
       )}

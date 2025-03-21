@@ -3,7 +3,9 @@
 .text-racing {
     color: white;
 }
-
+.file-status{
+    color: white;
+}
 .analysis-content {
     color: white;
 }
@@ -43,3 +45,58 @@
     color: #fff;
     font-size: 1.5em;
   }
+/* Info Icon Styles */
+.question-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #FFD700;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 215, 0, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  animation: icon-pulse 2s infinite;
+}
+
+.question-mark:hover {
+  transform: scale(1.1);
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+/* Tooltip Positioning with fixed yellow text color */
+.data-tooltip2 {
+  position: fixed;
+  bottom: 350px;
+  left: 20px;
+  width: 320px;
+  background: rgba(10, 10, 10, 0.97);
+  backdrop-filter: blur(5px);
+  padding: 1.2rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  animation: tooltipFade 0.3s ease;
+  z-index: 1000;
+  color: #ffffff; 
+}
+
+/* Keyframes for the pulsating effect */
+@keyframes icon-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); opacity: 0.9; }
+  100% { transform: scale(1); }
+}
+
+/* Tooltip fade-in animation */
+@keyframes tooltipFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

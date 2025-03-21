@@ -5,7 +5,7 @@ import { fetchUserPlot, submitComparativeAnalysis } from '../services/api';
 import '../styles/Analysis-Report.css';
 
 function AnalysisReportR() {
-  const [analysis, setAnalysis] = useState('Loading analysis...');
+  const [analysis, setAnalysis] = useState('Looking for file...');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [file, setFile] = useState(null);
@@ -48,7 +48,7 @@ function AnalysisReportR() {
         let imageUrl;
 
         if (token) {
-          console.log("formData Test Analysis", formData)
+          console.log("formData Test Analysis", formData);
           const llmResponse = await submitComparativeAnalysis(
             year,
             track,
@@ -64,7 +64,6 @@ function AnalysisReportR() {
 
           setLlmResponse(llmResponse.result);
           localStorage.setItem('llmResponse', llmResponse.result);
-
 
           if (responsePlot && responsePlot.status === 200) {
             const blob = responsePlot.data;
@@ -101,6 +100,32 @@ function AnalysisReportR() {
     ));
   };
 
+  // Inline Info Hover Button Component
+  const InfoHoverButton = () => {
+    const [showTooltip, setShowTooltip] = useState(false);
+
+    return (
+      <div style={{ position: 'relative', display: 'inline-block', marginRight: '10px' }}>
+        <div
+          className="question-mark"
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
+        >
+          ?
+        </div>
+        {showTooltip && (
+          <div className="data-tooltip2">
+           To collect your own data, run DFmaker.py from our GitHub repository.
+            Enter your IP address and your port number of choice, and press enter. Log onto your F1 game,
+            go to Telemetry Settings and enter the same IP address and port number. The software will start
+            collecting data once you start a time trial lap, and automatically save the data once the lap ends.
+            You can upload that data file here.
+          </div>
+        )}
+      </div>
+    );
+  };
+
   if (isLoading) {
     return <div className="analysis-content">Loading...</div>;
   }
@@ -118,13 +143,14 @@ function AnalysisReportR() {
     <div className="analysis-report-container">
       <h2 className="text-racing">Race Analysis Report</h2>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center' }}>
+        {/* Info Hover Button placed to the left of the file chooser */}
+        <InfoHoverButton />
         <input type="file" accept=".json" onChange={handleFileChange} />
-        <button type="submit">Upload JSON</button>
       </form>
 
       <div className={`file-status ${fileChosen ? 'text-white' : ''}`}>
-        {fileChosen ? <span className="filename">{file.name}</span> : 'No file chosen'}
+        {fileChosen ? <span className="filename">{file.name}</span> : 'Please choose a JSON file.'}
       </div>
 
       {/* Plot image */}

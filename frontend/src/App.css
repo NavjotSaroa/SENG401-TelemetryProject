@@ -66,7 +66,7 @@ body {
 
 /* Special Components */
 .telemetry-comparison {
-  background: rgba(11, 11, 11, 0.9);
+  background: rgb(11, 11, 11);
   border: 2px solid var(--primary-red);
   border-radius: 8px;
   padding: 2rem;
@@ -145,7 +145,10 @@ body {
   color: var(--neon-blue);
 
 }
-
+.race-data-entry-container{
+  color: white
+  
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
