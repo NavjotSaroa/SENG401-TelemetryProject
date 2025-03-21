@@ -15,7 +15,6 @@ CORS(app, origins=[
 
 # Registering API endpoints
 app.register_blueprint(request_handler, url_prefix='/api/telemetry')
-app.register_blueprint(data_analysis_api, url_prefix='/api/data_analysis')
 app.register_blueprint(report_gen_api, url_prefix='/api/report_gen')
 app.register_blueprint(auth_api, url_prefix='/api/auth')
 
