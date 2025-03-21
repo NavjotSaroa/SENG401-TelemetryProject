@@ -52,3 +52,7 @@ This layered structure makes it so that the backend has a clear separation of co
   - throttle the rate of requests, if small delays are sufficient to stay within the limit (soft rate limit)
   - raise a `fastf1.RateLimitExceededError` (hard rate limit)
 - OpenAI: 
+
+## Generative AI Disclosure:
+ChatGPT was used in debugging and identification of errors in the code, along with assistance in deployment.
+Beyond that, it was also used from an educational perspective to understand unfamiliar technologies before code was written in ourselves.
