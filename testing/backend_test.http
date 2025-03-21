@@ -29,27 +29,3 @@ Content-Type: application/json
     "username": "Mike@test.com",
     "password": "Guazouski?"
 }
-
-###
-# Test chatGPT prompting for the single driver analysis
-POST https://seng401-telemetryproject-d3hw.onrender.com/api/report_gen/single-analysis
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJNaWtlQHRlc3QuY29tIn0.csAEyoFrHm0b8oW1VtEo6_UjMcSxddv6uPhCfgXJKpE
-Content-Type: application/json
-
-{
-    "track": "monza",
-    "data": ""
-}
-
-
-###
-# Test chatGPT prompting for comparative analysis
-POST https://seng401-telemetryproject-d3hw.onrender.com/api/report_gen/comparative-analysis
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJNaWtlQHRlc3QuY29tIn0.csAEyoFrHm0b8oW1VtEo6_UjMcSxddv6uPhCfgXJKpE
-Content-Type: application/json
-
-{
-    "track": "monza",
-    "user_data": "",
-    "pro_data": ""
-}
