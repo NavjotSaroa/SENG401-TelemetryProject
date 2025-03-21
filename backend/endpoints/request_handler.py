@@ -86,6 +86,9 @@ def fetch_drivers():
     return driver_list
 
 def extract_args(args):
+    """
+        Extracts the args, and retrieves relevant telemetry data and returns them as a tuple.
+    """
     season = int(args.get('year'))
     track = args.get('track')
     driver = args.get('driver')
@@ -138,12 +141,39 @@ def plot_helper(args, car_data = None):
 
 @request_handler.route('/fetch/telemetry', methods = ['GET'])
 def fetch_pro_plot():
+    """
+    Returns a json of drivers for the queried race weekend.
+
+    Args:
+        None, arguments as passed as query with parameters: 
+        - 'year', between 2019 and 2024
+        - 'track', chosen from track_list from fetch_tracklist
+        - 'driver', chosen from list of drivers from fetch_drivers
+        - 'theme', chosen from dropdown in frontend
+
+    Returns:
+        A telemetry plot as a png of the pro_driver data
+    """
     return plot_helper(request.args, None)   # Make plot
 
 
 @request_handler.route('/fetch/registered_telemetry', methods = ['GET'])
 @jwt_required
 def fetch_user_plot():
+    """
+    Returns a json of drivers for the queried race weekend.
+
+    Args:
+        None, arguments as passed as query with parameters: 
+        - 'year', between 2019 and 2024
+        - 'track', chosen from track_list from fetch_tracklist
+        - 'driver', chosen from list of drivers from fetch_drivers (this is the pro driver)
+        - 'theme', chosen from dropdown in frontend
+        - 'user_data', JSON of the user's telemetry data (collection is explained on the upload page)
+
+    Returns:
+        A telemetry plot as a png of the user's telemetry
+    """
     json_file_as_string = request.args.get("user_data")
     json_file = json.loads(json_file_as_string) if json_file_as_string else abort(403)
 
