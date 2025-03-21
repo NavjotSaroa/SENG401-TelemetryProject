@@ -143,10 +143,29 @@ function AnalysisReportR() {
     <div className="analysis-report-container">
       <h2 className="text-racing">Race Analysis Report</h2>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center' }}>
-        {/* Info Hover Button placed to the left of the file chooser */}
-        <InfoHoverButton />
-        <input type="file" accept=".json" onChange={handleFileChange} />
+      <form onSubmit={handleSubmit} className="upload-form">
+        <div className="file-upload-container">
+          <InfoHoverButton />
+          <div className="file-input-group">
+            <input 
+              type="file" 
+              accept=".json" 
+              onChange={handleFileChange}
+              id="fileInput"
+              className="custom-file-input"
+            />
+            <label htmlFor="fileInput" className="file-input-label">
+              
+            </label>
+            <button 
+              type="submit" 
+              className="btn btn-primary submit-button"
+              disabled={!fileChosen}
+            >
+              {isLoading ? 'Analyzing...' : 'Submit'}
+            </button>
+          </div>
+        </div>
       </form>
 
       <div className={`file-status ${fileChosen ? 'text-white' : ''}`}>
