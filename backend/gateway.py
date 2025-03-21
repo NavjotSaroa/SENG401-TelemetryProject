@@ -1,7 +1,6 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 from endpoints.request_handler import request_handler
-from endpoints.data_analysis import data_analysis_api
 from endpoints.report_gen import report_gen_api
 from endpoints.auth import auth_api
 import os
